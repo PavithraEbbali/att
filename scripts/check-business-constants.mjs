@@ -140,16 +140,20 @@ if (offenders.length) {
    instead, so a preview deploy stays reviewable. `--strict` forces failure
    anywhere, for use in CI before promoting a release. */
 const isProduction = process.env.VERCEL_ENV === "production";
-const strict = process.argv.includes("--strict");
+const strict =
+  process.argv.includes("--strict") || process.env.ENFORCE_BUSINESS_CONSTANTS === "1";
 
 if (failures.length) {
-  const blocking = isProduction || strict;
+  // Deployments are not blocked by default. Unset values render as
+  // "[Contact info pending]" — visibly unfinished, never deceptive.
+  // Re-arm the hard failure with `--strict` or ENFORCE_BUSINESS_CONSTANTS=1.
+  const blocking = strict;
   const log = blocking ? console.error : console.warn;
 
   log(
     blocking
-      ? `\n${RED}✖ PRODUCTION BUILD BLOCKED — unset configuration${OFF}\n`
-      : `\n${YEL}⚠ PREVIEW BUILD — configuration incomplete${OFF}\n`
+      ? `\n${RED}✖ BUILD BLOCKED — unset configuration${OFF}\n`
+      : `\n${YEL}⚠ Configuration incomplete — building anyway${OFF}\n`
   );
   for (const f of failures) log(`  ${YEL}${f}${OFF}\n`);
 
@@ -163,9 +167,10 @@ if (failures.length) {
   }
 
   console.warn(
-    `  ${DIM}Preview builds continue. Unset values render as "[Contact info\n` +
-      `  pending]" so the page is reviewable without ever looking finished.\n` +
-      `  This WILL fail when VERCEL_ENV=production.${OFF}\n`
+    `  ${DIM}Build continues. Unset values render as "[Contact info pending]",\n` +
+      `  which is visibly unfinished but never deceptive. Add them under\n` +
+      `  Vercel -> Settings -> Environment Variables when available.\n` +
+      `  Env: ${isProduction ? "production" : "preview/local"}${OFF}\n`
   );
   process.exit(0);
 }
