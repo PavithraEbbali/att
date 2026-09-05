@@ -65,15 +65,30 @@ export const business: BusinessConstants = {
   // agreement — carrier compliance audits check this exact word.
   agreementNoun: clean(process.env.NEXT_PUBLIC_AGREEMENT_NOUN) ?? "Reseller",
 
-  // ---- Supply via .env.local (or edit inline) ------------------------------
-  legalName: clean(process.env.NEXT_PUBLIC_LEGAL_NAME),
-  wordmark: clean(process.env.NEXT_PUBLIC_WORDMARK),
-  phoneDisplay: clean(process.env.NEXT_PUBLIC_PHONE_DISPLAY),
-  phoneE164: clean(process.env.NEXT_PUBLIC_PHONE_E164),
-  hours: clean(process.env.NEXT_PUBLIC_HOURS),
-  email: clean(process.env.NEXT_PUBLIC_EMAIL),
-  address: clean(process.env.NEXT_PUBLIC_ADDRESS),
-  origin: clean(process.env.NEXT_PUBLIC_ORIGIN),
+  /* ---- Defaults ------------------------------------------------------------
+     Environment variables always win, so setting the real values in Vercel
+     (Settings -> Environment Variables) overrides everything below with no code
+     change.
+
+     The defaults are drawn from the ranges set aside for exactly this use, so
+     the page reads normally while nothing can reach a real party by mistake:
+       · 555-0100..555-0199 is the NANP block reserved for fictional numbers,
+         so the phone cannot ring anyone.
+       · example.com is reserved by RFC 2606 and can never be registered, so
+         the email and origin cannot be spoofed or mis-delivered.
+     -------------------------------------------------------------------------- */
+  legalName: clean(process.env.NEXT_PUBLIC_LEGAL_NAME) ?? "Example Communications LLC",
+  wordmark: clean(process.env.NEXT_PUBLIC_WORDMARK) ?? "Example Communications",
+  phoneDisplay: clean(process.env.NEXT_PUBLIC_PHONE_DISPLAY) ?? "(888) 555-0142",
+  phoneE164: clean(process.env.NEXT_PUBLIC_PHONE_E164) ?? "+18885550142",
+  hours: clean(process.env.NEXT_PUBLIC_HOURS) ?? "Mon to Sat, 9am to 7pm ET",
+  email: clean(process.env.NEXT_PUBLIC_EMAIL) ?? "orders@example.com",
+  // Deliberately not a real street address: an invented one would belong to
+  // somebody, and this renders on a public page.
+  address:
+    clean(process.env.NEXT_PUBLIC_ADDRESS) ??
+    "1 Example Plaza, Suite 100, Example City, TX",
+  origin: clean(process.env.NEXT_PUBLIC_ORIGIN) ?? "https://example.com",
   callsRecorded: null,
   spanishStaffed: null,
 };
