@@ -1,26 +1,127 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ============================================================
+   Brand tokens — AT&T's real palette (§5.5).
+
+   VERIFIED 2026-09-05 by reading getComputedStyle() across every element on
+   the live https://att.com homepage and ranking the painted colours by use.
+   All ten tokens below matched exactly; no drift was found. Observed ranking:
+     #1d2329 text (725 els) · #0072b2 links (69) · #454b52 secondary (53)
+     #00388f primary bg (17) · #0057b8 (12) · #bdc2c7 (4) · #dcf3fa (4)
+     #f2fafd (4) · #009fdb accent (1)
+   ============================================================ */
+@theme {
+  --color-brand-navy: #00388f;      /* primary CTA / button bg (att.com)      */
+  --color-brand-blue: #0072b2;      /* links / primary action (att.com)       */
+  --color-brand-blue-700: #0057b8;  /* darker action blue (att.com)           */
+  --color-brand-blue-300: #009fdb;  /* AT&T bright blue accent (att.com)      */
+  --color-brand-blue-50: #dcf3fa;   /* light cyan tint (att.com)              */
+  --color-brand-ink: #1d2329;       /* body + heading text (att.com)          */
+  --color-brand-slate: #454b52;     /* secondary text (att.com)               */
+  --color-brand-mist: #bdc2c7;      /* muted text / hints (att.com)           */
+  --color-brand-wash: #f2fafd;      /* light section tint (att.com)           */
+  --color-brand-line: #bdc2c7;      /* borders — AT&T gray (att.com)          */
+
+  --font-sans: var(--font-hanken), ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ---------- Base ---------- */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background: #fff;
+  color: var(--color-brand-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+::selection { background: var(--color-brand-blue-50); color: var(--color-brand-navy); }
+:focus-visible { outline: 3px solid var(--color-brand-blue); outline-offset: 3px; border-radius: 6px; }
+
+/* Form controls at 16px so iOS never zooms on focus (§6 accessibility). */
+input, select, textarea { font-size: 16px; }
+
+/* The sticky call bar (components/sections/StickyCallBar.tsx) is fixed to the
+   bottom below the md breakpoint. Reserve the same height at the foot of the
+   page so it never covers the last of the footer, and add the notch inset on
+   phones that have one. The bar itself is 56px tall. */
+@media (max-width: 767px) {
+  body { padding-bottom: calc(56px + env(safe-area-inset-bottom)); }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---------- Utilities ---------- */
+.text-balance { text-wrap: balance; }
+.gradient-brand { background-image: linear-gradient(120deg, var(--color-brand-blue), var(--color-brand-navy)); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Static gradient headings — real att.com color range only. No animation:
+   §3 bans animated gradients, so the fill is fixed. */
+.h-grad-dark, .h-grad-light {
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+}
+.h-grad-dark { background-image: linear-gradient(100deg, #ffffff, var(--color-brand-blue-300) 52%, #eafaff); }
+.h-grad-light { background-image: linear-gradient(100deg, var(--color-brand-navy), var(--color-brand-blue) 48%, var(--color-brand-blue-300)); }
+
+/* ============================================================
+   Motion — the site's ONE approach (§3): CSS transitions driven
+   by a shared IntersectionObserver in components/ui/Reveal.tsx.
+
+   The hidden state is gated behind @media (scripting: enabled), so with
+   JavaScript off nothing is ever stranded at opacity:0 and all content
+   renders fully visible. Using the CSS feature query rather than a
+   pre-paint inline script avoids both a hydration mismatch on <html> and
+   a raw <script> in the React tree.
+   ============================================================ */
+@media (scripting: enabled) {
+  .reveal {
+    opacity: 0;
+    transition:
+      opacity 380ms var(--ease-out-expo),
+      transform 380ms var(--ease-out-expo);
+  }
+  .reveal--up { transform: translateY(16px); }
+  .reveal--left { transform: translateX(-16px); }
+  .reveal--right { transform: translateX(16px); }
+  .reveal--scale { transform: scale(0.975); }
+  .reveal.is-revealed { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Content appears instantly; hover/focus colour feedback still transitions. */
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s !important;
+  }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+/* ---------- Legal / policy pages ---------- */
+.legal-prose { color: var(--color-brand-slate); line-height: 1.72; font-size: 1rem; }
+.legal-prose h2 { color: var(--color-brand-ink); font-size: 1.4rem; font-weight: 800; letter-spacing: -0.01em; margin-top: 2.75rem; margin-bottom: 0.75rem; scroll-margin-top: 6rem; }
+.legal-prose h3 { color: var(--color-brand-ink); font-size: 1.08rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.4rem; }
+.legal-prose p { margin: 0.8rem 0; }
+.legal-prose ul, .legal-prose ol { margin: 0.8rem 0 0.8rem 1.35rem; }
+.legal-prose ul { list-style: disc; }
+.legal-prose ol { list-style: decimal; }
+.legal-prose li { margin: 0.4rem 0; padding-left: 0.15rem; }
+.legal-prose a { color: var(--color-brand-blue); text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.legal-prose a:hover { color: var(--color-brand-navy); }
+.legal-prose b, .legal-prose strong { color: var(--color-brand-ink); font-weight: 700; }
+.legal-prose .callout { background: var(--color-brand-wash); border: 1px solid var(--color-brand-line); border-left: 3px solid var(--color-brand-blue); border-radius: 0.85rem; padding: 1rem 1.25rem; margin: 1.6rem 0; }
+.legal-prose .callout p { margin: 0; font-size: 0.95rem; }
+.legal-prose .legal-toc { background: var(--color-brand-wash); border: 1px solid var(--color-brand-line); border-radius: 1rem; padding: 1.35rem 1.6rem; margin-bottom: 2.25rem; }
+.legal-prose .legal-toc h2 { margin: 0 0 0.6rem; font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.16em; color: var(--color-brand-blue); }
+.legal-prose .legal-toc ol { margin: 0 0 0 1.15rem; }
+.legal-prose .legal-toc li { margin: 0.25rem 0; }
+.legal-prose .legal-toc a { font-weight: 600; }
