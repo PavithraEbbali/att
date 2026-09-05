@@ -54,8 +54,9 @@ const missing = mod.missingRequired();
 
 if (missing.length) {
   failures.push(
-    `${missing.length} required business constant(s) unset in lib/business.ts:\n` +
-      missing.map((k) => `      · ${k}`).join("\n")
+    `${missing.length} required value(s) not set. Add these environment variables\n` +
+      `      (Vercel: Settings -> Environment Variables -> Production):\n` +
+      missing.map((k) => `      · ${mod.ENV_VAR_FOR?.[k] ?? k}`).join("\n")
   );
 }
 

@@ -78,6 +78,19 @@ export const business: BusinessConstants = {
   spanishStaffed: null,
 };
 
+/** The env var that supplies each constant, for actionable build errors. */
+export const ENV_VAR_FOR: Record<string, string> = {
+  legalName: "NEXT_PUBLIC_LEGAL_NAME",
+  wordmark: "NEXT_PUBLIC_WORDMARK",
+  agreementNoun: "NEXT_PUBLIC_AGREEMENT_NOUN",
+  phoneDisplay: "NEXT_PUBLIC_PHONE_DISPLAY",
+  phoneE164: "NEXT_PUBLIC_PHONE_E164",
+  hours: "NEXT_PUBLIC_HOURS",
+  email: "NEXT_PUBLIC_EMAIL",
+  address: "NEXT_PUBLIC_ADDRESS",
+  origin: "NEXT_PUBLIC_ORIGIN",
+};
+
 /** Values that must be set before the site may be built. */
 export const REQUIRED_KEYS = [
   "legalName",
