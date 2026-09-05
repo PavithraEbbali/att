@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AT&T Authorized Reseller — marketing site
 
-## Getting Started
+Frontend-only Next.js site for an independent authorized reseller of AT&T
+Fiber, AT&T Internet Air, AT&T wireless and AT&T Phone. No API routes, no
+database, no server-only code — every page prerenders to static HTML.
 
-First, run the development server:
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev            # http://localhost:3000
+npm run build          # production build (runs the config gate first)
+npm run check:constants   # check §8 business constants on their own
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> **Note for this checkout:** the folder name contains an `&`, which breaks
+> npm's Windows `cmd` shim (`'T' is not recognized as an internal or external
+> command`). The npm scripts therefore call Next through `node` directly rather
+> than via the `next` bin shim. Renaming the folder to drop the `&` would let
+> the conventional scripts work again.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All business-identity values live in [`lib/business.ts`](lib/business.ts) and
+are supplied via environment variables. Copy the template and fill it in:
 
-## Learn More
+```bash
+cp .env.example .env.local
+```
 
-To learn more about Next.js, take a look at the following resources:
+Every key is `NEXT_PUBLIC_*` because all of it is printed on the page — there
+are **no secrets, API keys or credentials in this project**.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### The configuration gate
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`scripts/check-business-constants.mjs` runs automatically on `prebuild`. It
+fails if a required constant is missing, empty, still contains a placeholder
+marker (`TODO`, `XXX`, `TBD`), or is a fictional phone number (the `555-01xx`
+range reserved for fiction).
 
-## Deploy on Vercel
+| Build | Missing/placeholder constant |
+| --- | --- |
+| Production (`VERCEL_ENV=production`) | **Build fails.** |
+| Preview / local | Warns, build continues. Unset values render as `[Contact info pending]`. |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Use `node scripts/check-business-constants.mjs --strict` to force the
+production behaviour anywhere (e.g. in CI before promoting a release).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deployment (Vercel)
+
+Vercel auto-detects Next.js; no custom build command is needed.
+
+1. Import the repository into Vercel.
+2. Add the `.env.example` keys under **Settings → Environment Variables**.
+   Preview and Production can hold different values, but Production must have
+   the real ones or the build will fail by design.
+3. Set `NEXT_PUBLIC_ORIGIN` to the real production domain before going live —
+   it drives canonical URLs and JSON-LD.
+
+The project intentionally does **not** use `output: "export"`, so `headers()`
+in [`next.config.ts`](next.config.ts) (security headers) and `next/image`
+optimisation both work. See the comment in that file for the reasoning.
+
+## Project layout
+
+| Path | Purpose |
+| --- | --- |
+| `lib/business.ts` | Business-identity constants + preview/production display rules |
+| `lib/content.ts` | All plan/price/promo content, each with its att.com source and observed date |
+| `lib/legalContent.ts` | Legal page copy, tokenised (`{{BUSINESS_NAME}}` etc.) |
+| `components/ui/Reveal.tsx` | The site's only motion primitive (CSS + IntersectionObserver) |
+| `components/ui/CallLink.tsx` | The only place the phone number becomes a link |
+| `scripts/check-business-constants.mjs` | Build gate |
+
+Pricing facts carry their source URL and the date they were pulled; see the
+comments in `lib/content.ts` before changing any number.
