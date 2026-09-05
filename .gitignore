@@ -32,6 +32,8 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# committed template: keys only, no values
+!.env.example
 
 # vercel
 .vercel
@@ -39,3 +41,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# untouched pre-compression copies of public/images (§0: originals retained)
+.image-originals/
+
+# editors
+.vscode/
+.idea/
+*.swp
+# OS
+Thumbs.db
+
+# local dev server log
+.dev.log
