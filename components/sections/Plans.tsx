@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import CallLink from "@/components/ui/CallLink";
-import { plans, CONFIRM } from "@/lib/content";
+import NetworkBadge from "@/components/ui/NetworkBadge";
+import { plans, CONFIRM, NETWORK } from "@/lib/content";
 import planStarter from "@/public/images/plan-starter.jpeg";
 import planExtra from "@/public/images/plan-extra.jpeg";
 import planPremium from "@/public/images/plan-premium.jpeg";
@@ -43,6 +44,8 @@ export default function Plans() {
           <p className="mt-4 max-w-lg text-lg text-brand-slate">
             AT&amp;T&apos;s unlimited lineup. Every line mixes and matches, keep your number, change anytime.
           </p>
+
+          <NetworkBadge type="mobile" tone="light" className="mt-5" />
         </Reveal>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
@@ -64,7 +67,14 @@ export default function Plans() {
                   <span className="absolute right-3 top-3 z-10 rounded-full bg-brand-blue-300 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-navy shadow">Most popular</span>
                 )}
 
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 z-10 h-1"
+                  style={{ background: NETWORK.mobile.accent }}
+                />
+
                 <div className="relative flex flex-1 flex-col p-6">
+                  <NetworkBadge type="mobile" tone="dark" showSubtitle={false} className="mb-3" />
                   <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-blue-300">Tier {i + 1} · {SHORT[i]}</span>
                   <h3 className="mt-1 text-2xl font-extrabold leading-none tracking-[-0.02em]">{p.name}</h3>
                   <p className="mt-1.5 text-sm text-brand-wash/75">{DESC[i]}</p>

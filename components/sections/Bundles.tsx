@@ -1,7 +1,8 @@
 import Reveal from "@/components/ui/Reveal";
 import PriceLockup from "@/components/ui/PriceLockup";
 import CallLink from "@/components/ui/CallLink";
-import { bundles } from "@/lib/content";
+import NetworkBadge from "@/components/ui/NetworkBadge";
+import { bundles, NETWORK } from "@/lib/content";
 
 /* Bundle savings — three standalone offers in a responsive 3-up grid.
 
@@ -27,6 +28,8 @@ export default function Bundles() {
             {bundles.headline}
           </h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">{bundles.sub}</p>
+
+          <NetworkBadge type="bundle" tone="dark" className="mt-5" />
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -45,6 +48,13 @@ export default function Bundles() {
                   </span>
                 )}
 
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-0 top-0 h-1 rounded-t-[1.35rem]"
+                  style={{ background: NETWORK.bundle.accent }}
+                />
+
+                <NetworkBadge type="bundle" tone="dark" showSubtitle={false} className="mb-3" />
                 <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-blue-300">
                   {o.eyebrow}
                 </span>

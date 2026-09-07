@@ -1,5 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 import TierCard from "@/components/ui/TierCard";
+import NetworkBadge from "@/components/ui/NetworkBadge";
 import { attPhone } from "@/lib/content";
 
 /* 6 of 6 — AT&T Phone. AT&T publishes no national price for either product,
@@ -14,12 +15,14 @@ export default function AttPhone() {
             {attPhone.headline}
           </h2>
           <p className="mt-4 max-w-xl text-lg text-brand-slate">{attPhone.sub}</p>
+
+          <NetworkBadge type="voip" tone="light" className="mt-5" />
         </Reveal>
 
         <div className="mt-12 grid gap-5 sm:grid-cols-2">
           {attPhone.tiers.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.08} className="flex">
-              <TierCard {...t} tone="light" />
+              <TierCard {...t} tone="light" networkType="voip" />
             </Reveal>
           ))}
         </div>

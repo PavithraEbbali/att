@@ -1,6 +1,7 @@
 import PriceLockup from "@/components/ui/PriceLockup";
 import CallLink from "@/components/ui/CallLink";
-import type { Price } from "@/lib/content";
+import NetworkBadge from "@/components/ui/NetworkBadge";
+import { NETWORK, type Price, type NetworkType } from "@/lib/content";
 
 /* One card per plan tier, shared by every service section so Fiber, Internet
    Air, Wireless and Phone all present pricing identically.
@@ -17,6 +18,8 @@ type Props = {
   features: string[];
   tone?: "light" | "dark";
   featured?: boolean;
+  /** drives the classification chip and the card's top accent */
+  networkType?: NetworkType;
 };
 
 export default function TierCard({
@@ -27,8 +30,10 @@ export default function TierCard({
   features,
   tone = "light",
   featured = false,
+  networkType,
 }: Props) {
   const dark = tone === "dark";
+  const accent = networkType ? NETWORK[networkType].accent : null;
 
   const shell = dark
     ? "border-white/15 bg-white/[0.07] text-white backdrop-blur-sm hover:border-brand-blue-300/60"
@@ -45,6 +50,18 @@ export default function TierCard({
           Most popular
         </span>
       )}
+
+      {/* Top accent tints the card by network type, so the grid is scannable
+          without reading any of the copy. */}
+      {accent && (
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-1 rounded-t-[1.35rem]"
+          style={{ background: accent }}
+        />
+      )}
+
+      {networkType && <NetworkBadge type={networkType} tone={tone} showSubtitle={false} className="mb-3" />}
 
       {speed && (
         <span className={`text-xs font-bold uppercase tracking-[0.18em] ${dark ? "text-brand-blue-300" : "text-brand-blue"}`}>

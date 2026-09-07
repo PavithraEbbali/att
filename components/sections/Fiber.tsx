@@ -1,5 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 import TierCard from "@/components/ui/TierCard";
+import NetworkBadge from "@/components/ui/NetworkBadge";
 import { fiber } from "@/lib/content";
 
 /* 1 of 6 — AT&T Fiber. Four tiers, matching what att.com actually lists
@@ -18,6 +19,8 @@ export default function Fiber() {
           </h2>
           <p className="mt-4 max-w-xl text-lg text-brand-slate">{fiber.sub}</p>
 
+          <NetworkBadge type="fiber" tone="light" className="mt-5" />
+
           <ul className="mt-6 flex flex-wrap gap-2.5">
             {fiber.valuePoints.map((v) => (
               <li key={v} className="inline-flex items-center gap-2 rounded-full border border-brand-line bg-brand-wash px-3.5 py-2 text-xs font-semibold text-brand-ink">
@@ -31,7 +34,7 @@ export default function Fiber() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:mt-14 lg:grid-cols-4">
           {fiber.tiers.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.07} className="flex">
-              <TierCard {...t} tone="light" featured={t.name === "AT&T Fiber 1 GIG"} />
+              <TierCard {...t} tone="light" networkType="fiber" featured={t.name === "AT&T Fiber 1 GIG"} />
             </Reveal>
           ))}
         </div>

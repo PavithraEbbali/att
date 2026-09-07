@@ -2,6 +2,7 @@ import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import PriceLockup from "@/components/ui/PriceLockup";
 import CallLink from "@/components/ui/CallLink";
+import NetworkBadge from "@/components/ui/NetworkBadge";
 import { internetAir } from "@/lib/content";
 import internetImg from "@/public/images/internet-home.jpg";
 
@@ -22,6 +23,8 @@ export default function InternetAir() {
             {internetAir.headline}
           </h2>
           <p className="mt-4 max-w-md text-lg leading-relaxed text-white/90">{internetAir.sub}</p>
+
+          <NetworkBadge type="fixed-wireless" tone="dark" className="mt-5" />
 
           <PriceLockup price={internetAir.price} tone="dark" className="mt-8" />
 

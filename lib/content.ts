@@ -55,6 +55,85 @@ export const nav = [
   { label: "FAQ", href: "#faq" },
 ];
 
+/* ==================================================================
+   NETWORK TYPE CLASSIFICATION
+
+   Every service section header and plan card carries a chip naming the
+   underlying technology, so a visitor scanning the page can tell a fibre
+   plan from a fixed-wireless one without reading body copy.
+
+   All labels, subtitles and pill classes live here — nothing is hardcoded in
+   JSX. Icons are drawn inline in components/ui/NetworkBadge.tsx rather than
+   pulled from an icon package: five glyphs do not justify a dependency, and
+   the site currently ships zero runtime libraries.
+   ================================================================== */
+export type NetworkType = "fiber" | "fixed-wireless" | "mobile" | "bundle" | "voip";
+
+export type NetworkMeta = {
+  badgeLabel: string;
+  /** short technical definition shown beside the label */
+  subtitle: string;
+  /** icon key resolved in NetworkBadge */
+  icon: NetworkType;
+  /** how the technology is named in the fine-print grid */
+  tableLabel: string;
+  /** pill classes for light and dark grounds */
+  pillLight: string;
+  pillDark: string;
+  /** top accent used to tint a card by network type */
+  accent: string;
+};
+
+export const NETWORK: Record<NetworkType, NetworkMeta> = {
+  fiber: {
+    badgeLabel: "100% Fiber Network",
+    // "Dedicated" is not how AT&T describes the line, so it is not claimed here.
+    subtitle: "Symmetrical speeds · Fiber-optic line",
+    icon: "fiber",
+    tableLabel: "100% Fiber-Optic",
+    pillLight: "bg-cyan-500/10 text-cyan-700 border-cyan-500/30",
+    pillDark: "bg-cyan-500/10 text-cyan-300 border-cyan-400/30",
+    accent: "#06b6d4",
+  },
+  "fixed-wireless": {
+    badgeLabel: "5G Home Internet (Fixed Wireless)",
+    subtitle: "Over-the-air 5G signal · Plug-and-play hub",
+    icon: "fixed-wireless",
+    tableLabel: "5G Fixed Wireless",
+    pillLight: "bg-indigo-500/10 text-indigo-700 border-indigo-500/30",
+    pillDark: "bg-indigo-500/10 text-indigo-300 border-indigo-400/30",
+    accent: "#6366f1",
+  },
+  mobile: {
+    badgeLabel: "Nationwide 5G Mobile",
+    subtitle: "Cellular voice, text & data · Mobile hotspot",
+    icon: "mobile",
+    tableLabel: "Postpaid Cellular",
+    pillLight: "bg-blue-500/10 text-blue-700 border-blue-500/30",
+    pillDark: "bg-blue-500/10 text-blue-300 border-blue-400/30",
+    accent: "#3b82f6",
+  },
+  bundle: {
+    badgeLabel: "Fiber + Mobile Bundle",
+    subtitle: "Combined services · Monthly bill credit",
+    icon: "bundle",
+    tableLabel: "Fiber + Cellular",
+    pillLight: "bg-emerald-500/10 text-emerald-700 border-emerald-500/30",
+    pillDark: "bg-emerald-500/10 text-emerald-300 border-emerald-400/30",
+    accent: "#10b981",
+  },
+  voip: {
+    badgeLabel: "Digital Home Voice (VoIP)",
+    // No audio-quality claim: "crystal clear" is not something we can evidence.
+    subtitle: "Broadband VoIP calling · Unlimited North America",
+    icon: "voip",
+    tableLabel: "Digital Voice (VoIP)",
+    pillLight: "bg-slate-500/10 text-slate-700 border-slate-500/30",
+    pillDark: "bg-slate-400/10 text-slate-200 border-slate-300/30",
+    accent: "#94a3b8",
+  },
+};
+
 /* ------------------------------------------------------------------
    HERO — anchored to AT&T's current published Fiber offer.
    ------------------------------------------------------------------ */
@@ -634,6 +713,7 @@ export const finePrint = {
   broadbandFactsUrl: "https://www.att.com/broadbandlabels/",
   observedAt: "2026-09-07",
   rows: [
+    "Technology",
     "Promo price",
     "Price after promo",
     "Self-install",
@@ -649,7 +729,9 @@ export const finePrint = {
   columns: [
     {
       plan: "AT&T Fiber 1 GIG",
+      network: "fiber" as NetworkType,
       cells: [
+        NETWORK.fiber.tableLabel,
         "$50/mo, first year, new customers",
         null,
         "$0 for the kit. $99 only if you request install assistance",
@@ -665,7 +747,9 @@ export const finePrint = {
     },
     {
       plan: "AT&T Fiber 300 / 500 / 5 GIG",
+      network: "fiber" as NetworkType,
       cells: [
+        NETWORK.fiber.tableLabel,
         null,
         null,
         "$0 for the kit. $99 only if you request install assistance",
@@ -681,7 +765,9 @@ export const finePrint = {
     },
     {
       plan: "AT&T Internet Air",
+      network: "fixed-wireless" as NetworkType,
       cells: [
+        NETWORK["fixed-wireless"].tableLabel,
         "$55/mo with Auto Pay & Paperless Billing",
         null,
         "$0 plug-and-play self-setup",
@@ -808,4 +894,3 @@ export const rewardCards = {
   source: "https://www.att.com/offers/wireless-fiber/",
   observedAt: "2026-09-07",
 };
-

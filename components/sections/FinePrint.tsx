@@ -1,4 +1,5 @@
 import Reveal from "@/components/ui/Reveal";
+import NetworkBadge from "@/components/ui/NetworkBadge";
 import { finePrint } from "@/lib/content";
 
 /* §4.5 — the honest fine-print grid, and the target of every "details below"
@@ -36,6 +37,7 @@ export default function FinePrint() {
             <Reveal key={col.plan} delay={ci * 0.06}>
               <div className="rounded-[1.35rem] border border-brand-line bg-brand-wash p-6">
                 <h3 className="text-lg font-extrabold tracking-[-0.02em] text-brand-ink">{col.plan}</h3>
+                <NetworkBadge type={col.network} tone="light" showSubtitle={false} className="mt-2" />
                 <dl className="mt-4 flex flex-col divide-y divide-brand-line">
                   {rows.map((row, ri) => (
                     <div key={row} className="grid grid-cols-[9rem_1fr] gap-3 py-3">
@@ -66,6 +68,7 @@ export default function FinePrint() {
                   {columns.map((col) => (
                     <th key={col.plan} scope="col" className="px-5 py-4 text-sm font-extrabold text-brand-ink">
                       {col.plan}
+                      <NetworkBadge type={col.network} tone="light" showSubtitle={false} className="mt-2 font-normal" />
                     </th>
                   ))}
                 </tr>
