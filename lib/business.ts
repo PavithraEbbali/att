@@ -163,6 +163,10 @@ export const PLACEHOLDER = {
   wordmark: "[Business Name]",
   address: "[Registered Address]",
   phoneDisplay: "[Order Line]",
+  /* Number-shaped mask for the navbar button, so the control keeps a
+     realistic width and reads as "a number belongs here". Unmistakably not
+     dialable, and isSet() rejects it if it is ever pasted into an env var. */
+  phoneMask: "(XXX) XXX-XXXX",
   email: "[Contact Email]",
   hours: "[Staffed Hours]",
   origin: "[Site URL]",

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { business, phoneHref, canCall } from "@/lib/business";
+import { business, phoneHref, canCall, PLACEHOLDER } from "@/lib/business";
 
 /* The single place the phone number becomes a link.
 
@@ -21,9 +21,16 @@ type Props = {
    * printed, so the CTA never appears without a working target.
    */
   showNumber?: boolean;
+  /**
+   * When the number is not set yet, render a number-shaped mask after the
+   * label instead of the label alone. Used by the navbar, where the button
+   * needs to keep a realistic width. Off everywhere else, so ordinary CTAs
+   * read as a clean "Call to order".
+   */
+  maskWhenUnset?: boolean;
 };
 
-export default function CallLink({ className, icon, label, numberClassName, showNumber = true }: Props) {
+export default function CallLink({ className, icon, label, numberClassName, showNumber = true, maskWhenUnset = false }: Props) {
   if (!canCall) {
     // Nothing to display at all — e.g. the footer address line, which relies
     // entirely on the number. Render nothing rather than an empty element.
@@ -37,7 +44,8 @@ export default function CallLink({ className, icon, label, numberClassName, show
     return (
       <span className={className} aria-disabled="true" data-call-cta-pending>
         {icon}
-        {bare}
+        {maskWhenUnset ? label : bare}
+        {maskWhenUnset && <span className={numberClassName}>{PLACEHOLDER.phoneMask}</span>}
       </span>
     );
   }

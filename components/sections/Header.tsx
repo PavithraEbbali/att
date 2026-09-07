@@ -60,6 +60,7 @@ export default function Header({ solid = false }: { solid?: boolean }) {
         <div className="flex shrink-0 items-center gap-2">
           <CallLink
             label="Call "
+            maskWhenUnset
             className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-brand-navy px-3 py-2.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-brand-blue sm:px-4"
             numberClassName="max-w-[42vw] truncate sm:max-w-none"
             icon={
