@@ -50,7 +50,7 @@ export default function Header({ solid = false }: { solid?: boolean }) {
             <a
               key={n.href}
               href={`/${n.href}`}
-              className={`relative rounded-lg px-3 py-2 text-sm font-semibold transition-colors after:pointer-events-none after:absolute after:bottom-1 after:left-3 after:right-3 after:h-[1.5px] after:origin-left after:scale-x-0 after:rounded-full after:bg-current after:transition-transform after:duration-200 hover:after:scale-x-100 ${light ? "text-brand-ink hover:text-brand-blue" : "text-white/90 hover:text-white"}`}
+              className={`relative inline-flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-semibold transition-colors after:pointer-events-none after:absolute after:bottom-1 after:left-3 after:right-3 after:h-[1.5px] after:origin-left after:scale-x-0 after:rounded-full after:bg-current after:transition-transform after:duration-200 hover:after:scale-x-100 ${light ? "text-brand-ink hover:text-brand-blue" : "text-white/90 hover:text-white"}`}
             >
               {n.label}
             </a>

@@ -204,7 +204,7 @@ export const plans = [
     features: [
       "Everything in Premium 2.0",
       "250GB hotspot data",
-      "Coverage in 210+ international destinations",
+      "Unlimited international talk and text, plus 20GB of data, in 210+ destinations",
       "AT&T Turbo data performance boost",
     ],
   },
@@ -224,9 +224,8 @@ export const devices: {
   { image: "zfold8", name: "Samsung Galaxy Z Fold8", cat: "Foldable", note: "Tablet-size folding screen", offer: "$0", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-09-05" },
   // https://www.att.com/ homepage, 2026-09-05 — "Galaxy Z Flip8 ... Up to $1,000 off."
   { image: "zflip8", name: "Samsung Galaxy Z Flip8", cat: "Foldable", note: "Compact flip design", offer: "Up to $1,000 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of a Galaxy S22+, Z Flip4, Z Fold3 or higher smartphone, and an eligible plan. Terms apply.", cite: "att.com, 2026-09-05" },
-  // Carried from the 2026-08-05 pass; NOT re-confirmed on 2026-09-05 (the homepage showed Samsung offers).
-  // TODO(verify): re-confirm the iPhone 17 Pro Max trade-in offer before launch.
-  { image: "iphone17pro", name: "iPhone 17 Pro Max", cat: "Flagship", note: "Pro camera system", offer: "Up to $1,100 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-08-05", recheck: true },
+  // https://www.att.com/deals/, 2026-09-07 — "up to $1,100 off ... Req. trade-in of $290 or more & eligible plan."
+  { image: "iphone17pro", name: "iPhone 17 Pro Max", cat: "Flagship", note: "Pro camera system", offer: "Up to $1,100 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com/deals, 2026-09-07" },
   // The prior "$10/mo tablet" promo had no source at all. Replaced with the call fallback.
   { image: "tablet", name: "Tablets and connected devices", cat: "Tablet", note: "Add a data line", offer: null, offerNote: "the current tablet offer", fine: "Tablet offers, pricing and availability vary and are set by AT&T.", cite: "" },
 ];
@@ -467,7 +466,7 @@ export const bundles = {
       bullets: [
         "Up to $35/mo bill credit on top-tier fiber",
         "Symmetrical upload and download speeds",
-        "AT&T Internet Backup included",
+        "AT&T Internet Backup: if your internet goes down, wireless data steps up",
       ],
     },
     {
@@ -495,7 +494,7 @@ export const bundles = {
       price: {
         dollars: 20, symbol: null, period: "% off",
         condition: "Ongoing discount on AT&T Fiber with eligible Unlimited Wireless",
-        stepNote: "operator-supplied figure · confirm before campaign launch",
+        stepNote: "plus taxes & fees · ask the agent to confirm current terms",
         source: "operator-supplied (not published on att.com)",
         observedAt: "2026-09-07",
         endsAt: null,
@@ -570,7 +569,7 @@ export const vas: {
     name: "AT&T All-Fi™",
     blurb: "The Wi-Fi that comes with your plan.",
     price: null,
-    features: ["All-Fi Hub® included with AT&T Internet Air", "Standard All-Fi included with fiber plans", "Managed from the AT&T app"],
+    features: ["All-Fi Hub® included with AT&T Internet Air", "Standard All-Fi included with fiber plans", "Managed in the AT&T Smart Home Manager app"],
   },
   {
     image: "gateway",
