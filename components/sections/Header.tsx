@@ -11,9 +11,14 @@ import AttGlobe from "@/components/ui/AttGlobe";
    (§3): the magnetic nav links, the entrance slide and the scroll-progress bar
    are all removed.
 
-   §4.1: the phone number is visible as text at EVERY width. On small screens it
-   sits beside the menu button, outside the hamburger, so it is never hidden
-   behind a menu toggle. CallLink omits itself entirely if the number is unset.
+   §4.1/§2.1: the call button is present at EVERY width and always sits outside
+   the hamburger, so the CTA is never buried in a closed menu.
+
+   Below 360px the number itself is hidden and the button condenses to icon +
+   "Call". At 320px the full lockup (logo + number + burger) measured 368px
+   against a 320px viewport, which clipped the menu button off-screen entirely —
+   body overflow-x:hidden was hiding the break rather than fixing it. The number
+   returns at 360px and up, which is the floor the spec requires it at.
 
    Positioning is owned by SiteChrome, which stacks this under the disclosure bar. */
 export default function Header({ solid = false }: { solid?: boolean }) {
@@ -62,7 +67,7 @@ export default function Header({ solid = false }: { solid?: boolean }) {
             label="Call "
             maskWhenUnset
             className="inline-flex min-h-[44px] items-center gap-1.5 rounded-full bg-brand-navy px-3 py-2.5 text-sm font-bold text-white transition-colors duration-200 hover:bg-brand-blue sm:px-4"
-            numberClassName="max-w-[42vw] truncate sm:max-w-none"
+            numberClassName="hidden min-[360px]:inline"
             icon={
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" className="shrink-0">
                 <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z" />

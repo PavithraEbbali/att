@@ -36,7 +36,11 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  overflow-x: hidden;
+  /* `clip`, not `hidden`. Both stop sideways scrolling, but overflow-x:hidden
+     turns <body> into a scroll container, which silently breaks position:sticky
+     on descendants (the FAQ sidebar and the legal-page chrome both rely on it).
+     overflow-x:clip contains the overflow without creating that container. */
+  overflow-x: clip;
 }
 ::selection { background: var(--color-brand-blue-50); color: var(--color-brand-navy); }
 :focus-visible { outline: 3px solid var(--color-brand-blue); outline-offset: 3px; border-radius: 6px; }

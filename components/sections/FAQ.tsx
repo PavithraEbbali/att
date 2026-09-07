@@ -10,13 +10,18 @@ import { business, display } from "@/lib/business";
    CSS grid-template-rows transition (0fr -> 1fr) rather than a JS animation
    library, and collapses to an instant swap under prefers-reduced-motion.
    The decorative drifting gradient blobs the previous version animated on an
-   infinite loop are gone (§3). */
+   infinite loop are gone (§3).
+
+   The section uses `overflow-x-clip`, NOT `overflow-hidden`. `overflow: hidden`
+   made this section the scroll container for the sidebar below it, so its
+   `lg:sticky lg:top-28` silently never engaged. Clipping only the horizontal
+   axis contains the decorative dot grid without creating that container. */
 export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   const hours = display(business.hours, "hours");
 
   return (
-    <section id="faq" className="relative overflow-hidden bg-white py-24 lg:py-32">
+    <section id="faq" className="relative overflow-x-clip bg-white py-24 lg:py-32">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-[0.5] [background:radial-gradient(circle_at_1px_1px,rgba(0,56,143,.07)_1px,transparent_0)] [background-size:34px_34px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
 
       <div className="relative mx-auto grid w-[min(100%-3rem,1200px)] gap-12 lg:grid-cols-[0.8fr_1.2fr]">
