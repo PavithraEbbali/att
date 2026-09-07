@@ -716,27 +716,3 @@ export const rewardCards = {
   observedAt: "2026-09-07",
 };
 
-/* ------------------------------------------------------------------
-   TELEVISION — DIRECTV, not AT&T.
-
-   AT&T sold its remaining 70% stake in DIRECTV to TPG on 2 July 2025 and
-   holds none of it. DIRECTV is an independent company, so this section must
-   never describe TV as an AT&T product or as available "through AT&T".
-
-   No package names or prices are published here: they were not verifiable on
-   att.com (DIRECTV is no longer part of it), and reselling DIRECTV requires a
-   separate DIRECTV dealer authorization rather than the AT&T agreement this
-   site operates under. Section routes to the call.
-   ------------------------------------------------------------------ */
-export const tv = {
-  eyebrow: "Television",
-  headline: "Television is handled by DIRECTV, a separate company.",
-  sub: "AT&T no longer owns or sells DIRECTV. If you want television alongside AT&T internet or wireless, ask on the call and we will tell you what we are authorized to place.",
-  points: [
-    "DIRECTV has operated independently of AT&T since July 2025",
-    "TV is ordered separately from AT&T internet, wireless and phone",
-    "Availability and packages are confirmed on the call",
-  ],
-  /** TODO(operator): confirm whether a DIRECTV dealer agreement is held. */
-  dealerAgreementConfirmed: false,
-};

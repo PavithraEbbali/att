@@ -44,18 +44,16 @@ export default function VAS() {
                     </li>
                   ))}
                 </ul>
+
+                <CallLink
+                  showNumber={false}
+                  label="Call to order"
+                  className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-brand-navy px-4 py-3 text-sm font-bold text-white transition-colors duration-200 hover:bg-brand-blue"
+                />
               </article>
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={0.1} className="mt-10">
-          <CallLink
-            label="Ask about add-ons when you call"
-            showNumber={false}
-            className="inline-flex min-h-11 items-center rounded-full bg-brand-navy px-7 py-3.5 font-bold text-white transition-colors duration-200 hover:bg-brand-blue"
-          />
-        </Reveal>
       </div>
     </section>
   );

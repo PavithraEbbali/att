@@ -4,7 +4,6 @@ import Stats from "@/components/sections/Stats";
 import Fiber from "@/components/sections/Fiber";
 import InternetAir from "@/components/sections/InternetAir";
 import Bundles from "@/components/sections/Bundles";
-import Tv from "@/components/sections/Tv";
 import Plans from "@/components/sections/Plans";
 import AttPhone from "@/components/sections/AttPhone";
 import VAS from "@/components/sections/VAS";
@@ -23,16 +22,14 @@ import StickyCallBar from "@/components/sections/StickyCallBar";
    sequence, then the supporting sections:
 
      1. Fiber     2. Internet Air (AT&T runs no coaxial cable network)
-     3. Bundles   4. TV        5. Wireless      6. AT&T Phone
+     3. Bundles   4. Wireless   5. AT&T Phone
 
-   TV is present but framed as DIRECTV, an independent company: AT&T sold its
-   remaining 70% stake to TPG on 2 July 2025. No packages or prices are shown,
-   because none were verifiable and reselling DIRECTV needs a separate dealer
-   authorization. See components/sections/Tv.tsx.
+   There is no television section. AT&T sold its remaining 70% stake in DIRECTV
+   to TPG on 2 July 2025, so TV is not an AT&T product and is not sold here.
 
    Stats is the published-pricing overview that belongs to the Hero block, so it
-   stays directly beneath it. Devices and Coverage are not among the six service
-   lines and sit after How It Works. FAQ remains the last content section (§4.8). */
+   stays directly beneath it. The device lineup follows the fine-print grid.
+   FAQ remains the last content section before the footer (§4.8). */
 export default function Home() {
   return (
     <>
@@ -45,16 +42,15 @@ export default function Home() {
         <Fiber />
         <InternetAir />
         <Bundles />
-        <Tv />
         <Plans />
         <AttPhone />
 
         {/* --- supporting sections --- */}
         <VAS />
         <FinePrint />
+        <Devices />
         <WhyUs />
         <HowItWorks />
-        <Devices />
         <Coverage />
         <FAQ />
       </main>
