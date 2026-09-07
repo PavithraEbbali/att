@@ -215,17 +215,20 @@ export const plans = [
    The previous build's "$10/mo tablet" line had no source and is removed.
    ------------------------------------------------------------------ */
 export const devices: {
-  name: string; cat: string; note: string; offer: string | null; offerNote: string; fine: string; cite: string; recheck?: boolean;
+  name: string; cat: string; note: string; offer: string | null; offerNote: string; fine: string; cite: string;
+  /** file in /public/images — keyed here so the card and its photo cannot drift apart */
+  image: "zfold8" | "zflip8" | "iphone17pro" | "tablet";
+  recheck?: boolean;
 }[] = [
   // https://www.att.com/ homepage, 2026-09-05 — "Galaxy Z Fold8 ... $0 ... Req. trade-in of $290 or more & eligible plan."
-  { name: "Samsung Galaxy Z Fold8", cat: "Foldable", note: "Tablet-size folding screen", offer: "$0", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-09-05" },
+  { image: "zfold8", name: "Samsung Galaxy Z Fold8", cat: "Foldable", note: "Tablet-size folding screen", offer: "$0", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-09-05" },
   // https://www.att.com/ homepage, 2026-09-05 — "Galaxy Z Flip8 ... Up to $1,000 off."
-  { name: "Samsung Galaxy Z Flip8", cat: "Foldable", note: "Compact flip design", offer: "Up to $1,000 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of a Galaxy S22+, Z Flip4, Z Fold3 or higher smartphone, and an eligible plan. Terms apply.", cite: "att.com, 2026-09-05" },
+  { image: "zflip8", name: "Samsung Galaxy Z Flip8", cat: "Foldable", note: "Compact flip design", offer: "Up to $1,000 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of a Galaxy S22+, Z Flip4, Z Fold3 or higher smartphone, and an eligible plan. Terms apply.", cite: "att.com, 2026-09-05" },
   // Carried from the 2026-08-05 pass; NOT re-confirmed on 2026-09-05 (the homepage showed Samsung offers).
   // TODO(verify): re-confirm the iPhone 17 Pro Max trade-in offer before launch.
-  { name: "iPhone 17 Pro Max", cat: "Flagship", note: "Pro camera system", offer: "Up to $1,100 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-08-05", recheck: true },
+  { image: "iphone17pro", name: "iPhone 17 Pro Max", cat: "Flagship", note: "Pro camera system", offer: "Up to $1,100 off", offerNote: "with eligible trade-in", fine: "Requires trade-in of $290 or more and an eligible plan. Terms apply and are subject to change.", cite: "att.com, 2026-08-05", recheck: true },
   // The prior "$10/mo tablet" promo had no source at all. Replaced with the call fallback.
-  { name: "Tablets and connected devices", cat: "Tablet", note: "Add a data line", offer: null, offerNote: "the current tablet offer", fine: "Tablet offers, pricing and availability vary and are set by AT&T.", cite: "" },
+  { image: "tablet", name: "Tablets and connected devices", cat: "Tablet", note: "Add a data line", offer: null, offerNote: "the current tablet offer", fine: "Tablet offers, pricing and availability vary and are set by AT&T.", cite: "" },
 ];
 
 /* ------------------------------------------------------------------
@@ -557,14 +560,21 @@ export const attPhone = {
    $25/mo + tax), All-Fi Extenders, ActiveArmor (included) and ActiveArmor
    advanced ($7/mo, raised from $3.99 on 2026-02-18).
    "Smart Wi-Fi Extender" is the legacy name and is not used. */
-export const vas: { name: string; blurb: string; price: Price | null; features: string[] }[] = [
+export const vas: {
+  name: string; blurb: string; price: Price | null; features: string[];
+  image: "gateway" | "security"; alt: string;
+}[] = [
   {
+    image: "gateway",
+    alt: "A home Wi-Fi gateway on a console table",
     name: "AT&T All-Fi™",
     blurb: "The Wi-Fi that comes with your plan.",
     price: null,
     features: ["All-Fi Hub® included with AT&T Internet Air", "Standard All-Fi included with fiber plans", "Managed from the AT&T app"],
   },
   {
+    image: "gateway",
+    alt: "A Wi-Fi 7 gateway in a living room",
     name: "AT&T All-Fi Pro",
     blurb: "Wi-Fi 7 gateway with mesh extenders.",
     price: {
@@ -583,6 +593,8 @@ export const vas: { name: string; blurb: string; price: Price | null; features: 
     ],
   },
   {
+    image: "security",
+    alt: "Layered translucent blue glass panels",
     name: "AT&T ActiveArmor℠",
     blurb: "Included with wireless service.",
     price: null,
@@ -595,6 +607,8 @@ export const vas: { name: string; blurb: string; price: Price | null; features: 
   {
     /* The $7/mo tier is the MOBILE product. Home network security of the same
        name is bundled into All-Fi Pro above, not sold separately at $7. */
+    image: "security",
+    alt: "Layered translucent blue glass panels",
     name: "AT&T ActiveArmor advanced",
     blurb: "The paid tier, for mobile devices.",
     price: {

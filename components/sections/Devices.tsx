@@ -2,12 +2,22 @@ import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import CallLink from "@/components/ui/CallLink";
 import { devices } from "@/lib/content";
+import type { StaticImageData } from "next/image";
 import devZFold from "@/public/images/device-zfold8.jpeg";
+import devZFlip from "@/public/images/device-zflip8.jpeg";
 import devProMax from "@/public/images/device-iphone17pro.jpeg";
-import devValue from "@/public/images/device-iphone17e.jpeg";
 import devTablet from "@/public/images/device-tablet.jpeg";
 
-const DEVICE_IMAGES = [devZFold, devProMax, devValue, devTablet];
+/* Keyed, not positional. The previous array was indexed by position, so when
+   the device list changed the photos silently shifted — a Samsung card ended
+   up showing an iPhone. Looking the image up by key means a card can only ever
+   render its own photo. */
+const DEVICE_IMAGES: Record<string, StaticImageData> = {
+  zfold8: devZFold,
+  zflip8: devZFlip,
+  iphone17pro: devProMax,
+  tablet: devTablet,
+};
 
 /* Device lineup as two-up split cards. Motion is a staggered entrance only (§3):
    the tilt, cursor parallax and glare are gone, and so is the in-person/local
@@ -37,7 +47,7 @@ export default function Devices() {
             >
               <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-brand-navy sm:aspect-auto sm:w-[38%]">
                 <Image
-                  src={DEVICE_IMAGES[i]}
+                  src={DEVICE_IMAGES[d.image]}
                   alt={d.name}
                   fill
                   sizes="(max-width:640px) 100vw, 25vw"

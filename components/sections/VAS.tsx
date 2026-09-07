@@ -1,7 +1,18 @@
+import Image, { type StaticImageData } from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import PriceLockup from "@/components/ui/PriceLockup";
 import CallLink from "@/components/ui/CallLink";
 import { vas } from "@/lib/content";
+import vasGateway from "@/public/images/vas-gateway.jpg";
+import vasSecurity from "@/public/images/vas-security.jpg";
+
+/* Two images across four cards, paired by kind: the hardware cards share the
+   gateway shot, the security cards share the lattice. The repeat is the point
+   — it groups the section visually into equipment and protection. */
+const VAS_IMAGES: Record<string, StaticImageData> = {
+  gateway: vasGateway,
+  security: vasSecurity,
+};
 
 /* Value-added services. Product names are AT&T's current ones: All-Fi Hub,
    All-Fi Pro, All-Fi Extenders, ActiveArmor and ActiveArmor advanced. The
@@ -24,7 +35,19 @@ export default function VAS() {
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {vas.map((v, i) => (
             <Reveal key={v.name} delay={i * 0.07} className="flex">
-              <article className="flex h-full w-full flex-col rounded-[1.35rem] border border-brand-line bg-white p-6 shadow-[0_18px_50px_-28px_rgba(0,30,80,.35)] transition-colors duration-200 hover:border-brand-blue/40">
+              <article className="flex h-full w-full flex-col overflow-hidden rounded-[1.35rem] border border-brand-line bg-white shadow-[0_18px_50px_-28px_rgba(0,30,80,.35)] transition-colors duration-200 hover:border-brand-blue/40">
+                <div className="relative aspect-[16/10] w-full overflow-hidden bg-brand-wash">
+                  <Image
+                    src={VAS_IMAGES[v.image]}
+                    alt={v.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    placeholder="blur"
+                    className="object-cover"
+                  />
+                </div>
+
+                <div className="flex flex-1 flex-col p-6">
                 <h3 className="text-lg font-extrabold leading-tight tracking-[-0.02em] text-brand-ink">{v.name}</h3>
                 <p className="mt-1.5 text-sm text-brand-slate">{v.blurb}</p>
 
@@ -50,6 +73,7 @@ export default function VAS() {
                   label="Call to order"
                   className="mt-6 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-brand-navy px-4 py-3 text-sm font-bold text-white transition-colors duration-200 hover:bg-brand-blue"
                 />
+                </div>
               </article>
             </Reveal>
           ))}
