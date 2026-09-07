@@ -27,6 +27,13 @@ export type Price = {
   condition: string;
   /** post-promo step-up, when AT&T publishes one */
   stepUp?: { amount: number } | null;
+  /**
+   * The §3 lockup's step line, e.g. "plus taxes & fees · no annual contract".
+   * Free text because it varies per product: "no annual contract" is published
+   * for Fiber and Internet Air but NOT for the postpaid wireless tiers, so it
+   * must never be hardcoded across every card.
+   */
+  stepNote?: string;
   source: string;
   observedAt: string;
   endsAt?: string | null;
@@ -35,10 +42,10 @@ export type Price = {
 };
 
 export const nav = [
-  { label: "Plans", href: "#plans" },
-  { label: "Devices", href: "#devices" },
-  { label: "Internet", href: "#internet" },
-  { label: "Coverage", href: "#coverage" },
+  { label: "Fiber", href: "#fiber" },
+  { label: "Internet Air", href: "#internet-air" },
+  { label: "Wireless", href: "#plans" },
+  { label: "Phone", href: "#phone" },
   { label: "FAQ", href: "#faq" },
 ];
 
@@ -68,17 +75,70 @@ export const hero = {
 /* ------------------------------------------------------------------
    STAT LEDGER — national AT&T figures only.
    ------------------------------------------------------------------ */
-export const stats: {
-  value: string | null; qual?: string; prefix: string; suffix: string; label: string; cite: string;
-}[] = [
-  // https://www.att.com/plans/wireless/ — "starting at $30/month per line", req. AutoPay + Paperless.
-  { value: "30", qual: "starting at", prefix: "$", suffix: "/mo", label: "AT&T Value 2.0 unlimited, per line, with AutoPay and Paperless bill", cite: "att.com/plans/wireless, 2026-09-05" },
-  // https://www.att.com/internet/fiber/ — "1 GIG ... $50/mo. For your first year. New customers only."
-  { value: "50", qual: "first year", prefix: "$", suffix: "/mo", label: "AT&T Fiber 1 Gig, first-year price for new customers", cite: "att.com/internet/fiber, 2026-09-05" },
-  // https://www.att.com/internet/internet-air/ — "starting at $55/mo", AutoPay & Paperless req'd.
-  { value: "55", qual: "starting at", prefix: "$", suffix: "/mo", label: "AT&T Internet Air, with AutoPay and Paperless bill", cite: "att.com/internet/internet-air, 2026-09-05" },
-  // https://www.att.com/security/active-armor/ — ActiveArmor advanced, "$7 a month".
-  { value: "7", qual: "add-on", prefix: "$", suffix: "/mo", label: "AT&T ActiveArmor advanced, optional security add-on", cite: "att.com/security/active-armor, 2026-09-05" },
+export type StatEntry = {
+  /** short kicker above the label, e.g. "starting at" */
+  qual?: string;
+  label: string;
+  price: Price;
+};
+
+/* Each entry carries its OWN qualifier and step line. The §3 lockup template
+   shows "with Auto Pay & Paperless Billing" / "plus taxes & fees · no annual
+   contract", but neither line is universally true here:
+     · AutoPay + Paperless is the published condition for wireless, Fiber and
+       Internet Air, but not for the ActiveArmor add-on.
+     · "no annual contract" is published for Fiber and Internet Air only. AT&T
+       publishes it for PREPAID wireless, not for postpaid Value/Extra/Premium/
+       Elite 2.0, so it is omitted there (see the WIRELESS note below). */
+export const stats: StatEntry[] = [
+  {
+    qual: "starting at",
+    label: "AT&T Value 2.0 unlimited, per line",
+    price: {
+      dollars: 30, cents: 0, period: "/mo",
+      condition: "with Auto Pay & Paperless Billing",
+      stepNote: "plus taxes & fees",
+      source: "https://www.att.com/plans/wireless/",
+      observedAt: "2026-09-05",
+      endsAt: null,
+    },
+  },
+  {
+    qual: "first year",
+    label: "AT&T Fiber 1 Gig, for new customers",
+    price: {
+      dollars: 50, cents: 0, period: "/mo",
+      condition: "First year, new customers. With Auto Pay & Paperless Billing",
+      stepNote: "plus taxes & fees · no annual contract",
+      source: "https://www.att.com/internet/fiber/",
+      observedAt: "2026-09-05",
+      endsAt: null,
+    },
+  },
+  {
+    qual: "starting at",
+    label: "AT&T Internet Air, 5G home internet",
+    price: {
+      dollars: 55, cents: 0, period: "/mo",
+      condition: "with Auto Pay & Paperless Billing",
+      stepNote: "plus taxes & fees · no annual contract",
+      source: "https://www.att.com/internet/internet-air/",
+      observedAt: "2026-09-05",
+      endsAt: null,
+    },
+  },
+  {
+    qual: "optional add-on",
+    label: "AT&T ActiveArmor advanced security",
+    price: {
+      dollars: 7, cents: 0, period: "/mo",
+      condition: "Optional add-on to an eligible AT&T service",
+      stepNote: "plus taxes & fees",
+      source: "https://www.att.com/security/active-armor/",
+      observedAt: "2026-09-05",
+      endsAt: null,
+    },
+  },
 ];
 
 /* ------------------------------------------------------------------
@@ -263,4 +323,250 @@ export const faqs = [
     q: "What equipment do I need?",
     a: "AT&T provides the equipment. AT&T Internet Air includes the AT&T All-Fi Hub, fiber plans include All-Fi, and All-Fi Pro with Wi-Fi 7 and mesh extenders is an optional upgrade at $25 per month plus tax.",
   },
+];
+
+/* ==================================================================
+   SERVICE LINES — ordered Fiber -> Internet Air -> Bundles -> Wireless
+   -> Phone. All figures re-verified against att.com on 2026-09-07.
+
+   Deviations from the brief, forced by what AT&T actually publishes:
+   · Fiber has FOUR tiers (300 / 500 / 1 GIG / 5 GIG). There is no 2 GIG
+     tier on att.com/internet/fiber. Only 1 GIG carries a national price.
+   · The Internet Air "$35-$47 bundled" range is not published; omitted.
+   · The bundle discount AT&T publishes is $420/yr ($35/mo off 5 GIG),
+     not a 20% bill credit. The 20% figure could not be sourced.
+   · AT&T Phone has no nationally published price.
+   ================================================================== */
+
+/** A tier with no nationally published rate renders no price row (§2). */
+export type Tier = {
+  name: string;
+  speed?: string;
+  blurb: string;
+  price: Price | null;
+  features: string[];
+};
+
+/* SOURCE: https://www.att.com/internet/fiber/ (2026-09-07)
+   Speed options listed on the page: 300, 500, 1000, 5000.
+   "Plans From $35/mo" is a page-level entry point, not attributed to a tier,
+   so it is NOT attached to Internet 300 as a per-tier price. */
+export const fiber = {
+  eyebrow: "AT&T Fiber®",
+  headline: "Fiber-optic internet with equal upload and download speeds.",
+  sub: "Four speed tiers, symmetrical throughout. Availability is confirmed at your address on the call.",
+  fromNote: "Plans from $35/mo",
+  valuePoints: [
+    "Equal upload and download speeds",
+    "Wi-Fi equipment included",
+    "Unlimited internet data",
+    "No annual contract",
+  ],
+  tiers: [
+    { name: "AT&T Fiber 300", speed: "300 Mbps", blurb: "Everyday streaming and work from home.", price: null, features: ["Symmetrical 300 Mbps", "Wi-Fi equipment included", "Unlimited data"] },
+    { name: "AT&T Fiber 500", speed: "500 Mbps", blurb: "Busier households on many devices.", price: null, features: ["Symmetrical 500 Mbps", "Wi-Fi equipment included", "Unlimited data"] },
+    {
+      name: "AT&T Fiber 1 GIG",
+      speed: "1,000 Mbps",
+      blurb: "The most-quoted tier.",
+      price: {
+        dollars: 50, cents: 0, period: "/mo",
+        condition: "First year, new customers. With Auto Pay & Paperless Billing",
+        stepNote: "plus taxes & fees · no annual contract",
+        source: "https://www.att.com/internet/fiber/",
+        observedAt: "2026-09-07",
+        endsAt: null,
+      },
+      features: ["Symmetrical 1 Gig", "Wi-Fi equipment included", "Unlimited data"],
+    },
+    { name: "AT&T Fiber 5 GIG", speed: "5,000 Mbps", blurb: "The top of the lineup.", price: null, features: ["Symmetrical 5 Gig", "Wi-Fi equipment included", "Unlimited data"] },
+  ] satisfies Tier[],
+};
+
+/* SOURCE: https://www.att.com/internet/internet-air/ (2026-09-07)
+   AT&T operates no coaxial cable network. Its non-fiber consumer broadband is
+   Internet Air (5G fixed wireless). Legacy DSL/IPBB is NOT offered to new
+   customers, so it is deliberately absent rather than advertised. */
+export const internetAir = {
+  eyebrow: "AT&T Internet Air®",
+  headline: "5G home internet where fiber has not reached.",
+  sub: "A gateway you plug in yourself connects over the AT&T wireless network. Offered in select areas where AT&T Fiber is not available.",
+  price: {
+    dollars: 55, cents: 0, period: "/mo",
+    condition: "with Auto Pay & Paperless Billing",
+    stepNote: "plus taxes & fees · no annual contract",
+    source: "https://www.att.com/internet/internet-air/",
+    observedAt: "2026-09-07",
+    endsAt: null,
+  } satisfies Price,
+  features: [
+    "AT&T All-Fi Hub® included",
+    "$0 plug-and-play self-setup",
+    "Unlimited data, no overage fees",
+    "No annual contract",
+  ],
+  // TODO(verify): the "$35-$47/mo bundled with wireless" range in the brief is
+  // not published on the product page. Omitted rather than guessed.
+};
+
+/* SOURCE: https://www.att.com/bundles/ (2026-09-07)
+   Verbatim condition: "$420 savings for new customers based on combined
+   discounts of $35/mo. on 5-GIG internet w/ elig wireless svc and elig. AutoPay
+   & paperless bill. Ltd. avail/areas."
+   The brief's "20% monthly bill credit" and "Build-A-Plan from $70/mo" could
+   not be sourced on att.com and are therefore not published here. */
+export const bundles = {
+  eyebrow: "Bundle savings",
+  headline: "Add wireless to home internet and the internet bill drops.",
+  sub: "AT&T applies a monthly discount when eligible wireless service sits on the same account as AT&T Fiber.",
+  price: {
+    dollars: 420, period: "/yr",
+    condition: "New customers. $35/mo off 5 GIG internet with eligible wireless service, Auto Pay & Paperless Billing",
+    stepNote: "up to · limited availability in select areas",
+    source: "https://www.att.com/bundles/",
+    observedAt: "2026-09-07",
+    endsAt: null,
+  } satisfies Price,
+  points: [
+    "Discount applies to the home internet line",
+    "Requires eligible AT&T wireless service on the account",
+    "Auto Pay and Paperless Billing required",
+  ],
+};
+
+/* SOURCE: https://www.att.com/home-phone/ (2026-09-07)
+   No national price is published for either product, so no price row renders.
+   Page states: "AT&T Phone may require an internet connection provided by
+   AT&T for an add'l cost." */
+export const attPhone = {
+  eyebrow: "AT&T Phone®",
+  headline: "Digital home phone over your AT&T internet line.",
+  sub: "Unlimited nationwide calling with call-screening features. Pricing depends on the internet plan it attaches to, so it is quoted on the call.",
+  tiers: [
+    {
+      name: "AT&T Phone",
+      blurb: "The standard digital home line.",
+      price: null,
+      features: ["25+ calling features", "Unlimited long distance", "Digital Phone Call Protect"],
+    },
+    {
+      name: "AT&T Phone – Advanced",
+      blurb: "Adds backup power.",
+      price: null,
+      features: ["Everything in AT&T Phone", "Built-in 24-hour battery backup", "Works during a power outage"],
+    },
+  ] satisfies Tier[],
+  note: "AT&T Phone may require an internet connection provided by AT&T at an additional cost.",
+};
+
+/* VALUE-ADDED SERVICES. Product names verified on att.com (2026-09-07):
+   All-Fi Hub (Internet Air gateway), All-Fi Pro (Wi-Fi 7 gateway + mesh,
+   $25/mo + tax), All-Fi Extenders, ActiveArmor (included) and ActiveArmor
+   advanced ($7/mo, raised from $3.99 on 2026-02-18).
+   "Smart Wi-Fi Extender" is the legacy name and is not used. */
+export const vas: { name: string; blurb: string; price: Price | null; features: string[] }[] = [
+  {
+    name: "AT&T All-Fi™",
+    blurb: "The Wi-Fi that comes with your plan.",
+    price: null,
+    features: ["All-Fi Hub® included with AT&T Internet Air", "Standard All-Fi included with fiber plans", "Managed from the AT&T app"],
+  },
+  {
+    name: "AT&T All-Fi Pro",
+    blurb: "Wi-Fi 7 gateway with mesh extenders.",
+    price: {
+      dollars: 25, cents: 0, period: "/mo",
+      condition: "Optional upgrade on an eligible AT&T Fiber plan",
+      stepNote: "plus tax",
+      source: "https://www.att.com/wi-fi/",
+      observedAt: "2026-09-07",
+      endsAt: null,
+    },
+    features: ["Wi-Fi 7 enabled gateway", "Includes All-Fi Extenders", "Each extender covers up to 1,000 sq ft"],
+  },
+  {
+    name: "AT&T ActiveArmor℠",
+    blurb: "Security screening included with service.",
+    price: null,
+    features: ["Included at no extra cost", "Automatic fraud call blocking", "Spam risk alerts"],
+  },
+  {
+    name: "AT&T ActiveArmor advanced",
+    blurb: "The paid security tier.",
+    price: {
+      dollars: 7, cents: 0, period: "/mo",
+      condition: "Optional add-on to an eligible AT&T service",
+      stepNote: "plus taxes & fees",
+      source: "https://www.att.com/security/active-armor/",
+      observedAt: "2026-09-07",
+      endsAt: null,
+    },
+    features: ["VPN for public Wi-Fi", "Identity monitoring", "Safe browsing alerts"],
+  },
+];
+
+/* HONEST FINE-PRINT GRID (§4.5). One column per internet tier.
+   `null` means AT&T publishes no national figure — the cell says so plainly
+   rather than inventing one. Broadband Facts labels: att.com/broadbandlabels/ */
+export const finePrint = {
+  broadbandFactsUrl: "https://www.att.com/broadbandlabels/",
+  observedAt: "2026-09-07",
+  rows: [
+    "Promo price",
+    "Price after promo",
+    "One-time fees",
+    "Equipment",
+    "Taxes & fees",
+    "Speeds",
+    "Data cap",
+    "Contract",
+  ],
+  columns: [
+    {
+      plan: "AT&T Fiber 1 GIG",
+      cells: [
+        "$50/mo, first year, new customers",
+        null,
+        "Self-install or technician install, quoted per address",
+        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo + tax",
+        "Plus taxes & fees. Auto Pay & Paperless Billing required",
+        "Up to 1,000 Mbps symmetrical. Actual speeds vary",
+        "No data cap",
+        "No annual contract",
+      ],
+    },
+    {
+      plan: "AT&T Fiber 300 / 500 / 5 GIG",
+      cells: [
+        null,
+        null,
+        "Self-install or technician install, quoted per address",
+        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo + tax",
+        "Plus taxes & fees. Auto Pay & Paperless Billing required",
+        "Up to 300 / 500 / 5,000 Mbps symmetrical. Actual speeds vary",
+        "No data cap",
+        "No annual contract",
+      ],
+    },
+    {
+      plan: "AT&T Internet Air",
+      cells: [
+        "$55/mo with Auto Pay & Paperless Billing",
+        null,
+        "$0 self-setup",
+        "AT&T All-Fi Hub® included",
+        "Plus taxes & fees",
+        "Fixed wireless over the AT&T network. Actual speeds vary by location",
+        "Unlimited data, no overage fees",
+        "No annual contract",
+      ],
+    },
+  ],
+};
+
+/* §4.7 — three steps, describing the customer's experience only. */
+export const howItWorks = [
+  { step: "Call the number on this page", body: "You reach an agent who works with AT&T plans and pricing." },
+  { step: "Your address and price are checked", body: "The agent confirms what is available where you live and what it costs per month, while you are on the line." },
+  { step: "AT&T sets up the service", body: "AT&T Internet Air ships a gateway you plug in yourself. Fiber is either self-installed or scheduled with a technician." },
 ];

@@ -68,6 +68,70 @@ input, select, textarea { font-size: 16px; }
 .h-grad-light { background-image: linear-gradient(100deg, var(--color-brand-navy), var(--color-brand-blue) 48%, var(--color-brand-blue-300)); }
 
 /* ============================================================
+   §3 price lockup — the canonical baseline pricing block.
+
+   The whole row sits on one flex baseline: no <sup>, no negative margins, no
+   line-height hacks. Only colour tokens change between tones, so the geometry
+   is identical on light and dark backgrounds.
+
+   Every size here is >= 12px, per the mobile type floor.
+   ============================================================ */
+.lockup {
+  --lockup-fg: var(--color-brand-ink);
+  --lockup-muted: var(--color-brand-slate);
+  --lockup-link: var(--color-brand-blue);
+}
+.lockup--dark {
+  --lockup-fg: #fff;
+  --lockup-muted: rgb(255 255 255 / 0.72);
+  --lockup-link: var(--color-brand-blue-300);
+}
+
+.lockup__row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.1rem;
+  color: var(--lockup-fg);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.lockup__was {
+  margin-right: 0.4rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--lockup-muted);
+  text-decoration: line-through;
+}
+.lockup__cur { font-size: 1.375rem; line-height: 1; }
+.lockup__int {
+  font-size: clamp(2.5rem, 5vw, 3.25rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lockup__cents {
+  font-size: 1.375rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.lockup__per {
+  margin-left: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--lockup-muted);
+}
+
+.lockup__qual { margin-top: 0.55rem; font-size: 0.8125rem; line-height: 1.4; color: var(--lockup-muted); }
+.lockup__step { margin-top: 0.15rem; font-size: 0.8125rem; line-height: 1.4; color: var(--lockup-muted); }
+.lockup__fine { margin-top: 0.55rem; font-size: 0.75rem; line-height: 1.4; color: var(--lockup-muted); }
+.lockup__fine a {
+  color: var(--lockup-link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 200ms var(--ease-out-expo);
+}
+.lockup__fine a:hover { color: var(--lockup-fg); }
+
+/* ============================================================
    Motion — the site's ONE approach (§3): CSS transitions driven
    by a shared IntersectionObserver in components/ui/Reveal.tsx.
 
