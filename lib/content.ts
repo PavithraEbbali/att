@@ -409,54 +409,109 @@ export const internetAir = {
   // not published on the product page. Omitted rather than guessed.
 };
 
-/* SOURCE: https://www.att.com/bundles/ (2026-09-07)
-   Verbatim condition: "$420 savings for new customers based on combined
-   discounts of $35/mo. on 5-GIG internet w/ elig wireless svc and elig. AutoPay
-   & paperless bill. Ltd. avail/areas."
-   The brief's "20% monthly bill credit" and "Build-A-Plan from $70/mo" could
-   not be sourced on att.com and are therefore not published here. */
+/* BUNDLE SAVINGS — three offers, two audited and one operator-supplied.
+
+   Verbatim from att.com/bundles/ (2026-09-07):
+     "$420 savings for new customers based on combined discounts of $35/mo. on
+      5-GIG internet w/ elig wireless svc and elig. AutoPay & paperless bill.
+      Ltd. avail/areas."
+   Verbatim from att.com/bundles/internet-wireless/ (2026-09-07):
+     "Get hyper-fast 1 GIG internet for $30/mo. For your first 12 months when
+      you bundle with an unlimited wireless plan."
+
+   The ongoing 20% credit was checked on BOTH bundle pages and appears on
+   neither, so it is flagged `recheck` and attributed to the operator rather
+   than to att.com. */
 export const bundles = {
   eyebrow: "Bundle savings",
   headline: "Add wireless to home internet and the internet bill drops.",
-  sub: "AT&T applies a monthly discount when eligible wireless service sits on the same account as AT&T Fiber.",
+  sub: "AT&T discounts the home internet line when eligible unlimited wireless sits on the same account.",
+  /** headline figure, used for the section's price lockup */
   price: {
     dollars: 420, period: "/yr",
-    condition: "New customers. $35/mo off 5 GIG internet with eligible wireless service, Auto Pay & Paperless Billing",
+    condition: "New customers. Up to $35/mo off 5 GIG internet with eligible wireless service, Auto Pay & Paperless Billing",
     stepNote: "up to · limited availability in select areas",
     source: "https://www.att.com/bundles/",
     observedAt: "2026-09-07",
     endsAt: null,
   } satisfies Price,
+  offers: [
+    {
+      name: "1 GIG bundled with unlimited wireless",
+      price: {
+        dollars: 30, cents: 0, period: "/mo",
+        condition: "For your first 12 months when you bundle with an unlimited wireless plan",
+        stepNote: "plus taxes & fees · no annual contract",
+        source: "https://www.att.com/bundles/internet-wireless/",
+        observedAt: "2026-09-07",
+        endsAt: null,
+      } satisfies Price,
+    },
+    {
+      name: "Ongoing discount on AT&T Fiber",
+      price: {
+        dollars: 20, period: "% off",
+        condition: "Ongoing monthly discount on AT&T Fiber with an eligible Unlimited wireless plan",
+        stepNote: "operator-supplied figure · confirm before campaign launch",
+        // NOT FOUND on att.com/bundles/ or att.com/bundles/internet-wireless/
+        // during the 2026-09-07 audit. Carried on the operator's instruction.
+        source: "operator-supplied (not published on att.com)",
+        observedAt: "2026-09-07",
+        endsAt: null,
+        recheck: true,
+      } satisfies Price,
+    },
+  ],
   points: [
     "Discount applies to the home internet line",
-    "Requires eligible AT&T wireless service on the account",
+    "Requires eligible AT&T unlimited wireless on the same account",
     "Auto Pay and Paperless Billing required",
   ],
 };
 
-/* SOURCE: https://www.att.com/home-phone/ (2026-09-07)
-   No national price is published for either product, so no price row renders.
-   Page states: "AT&T Phone may require an internet connection provided by
-   AT&T for an add'l cost." */
+/* AT&T PHONE — plan name and calling allowances audited on att.com
+   (2026-09-07). The $24.99 rate is operator-supplied: the audit found NO
+   national price for AT&T Phone on att.com, so that figure is flagged
+   `recheck` and attributed to the operator, not the carrier.
+
+   Verbatim from att.com/home-phone/: "AT&T Phone may require an internet
+   connection provided by AT&T for an add'l cost." */
 export const attPhone = {
   eyebrow: "AT&T Phone®",
   headline: "Digital home phone over your AT&T internet line.",
-  sub: "Unlimited nationwide calling with call-screening features. Pricing depends on the internet plan it attaches to, so it is quoted on the call.",
+  sub: "Unlimited calling across the United States, Canada, Mexico, Puerto Rico, the U.S. Virgin Islands, Guam and the Northern Mariana Islands, with no long-distance charges.",
   tiers: [
     {
-      name: "AT&T Phone",
-      blurb: "The standard digital home line.",
-      price: null,
-      features: ["25+ calling features", "Unlimited long distance", "Digital Phone Call Protect"],
+      name: "AT&T Phone Unlimited North America",
+      blurb: "Unlimited calling across North America.",
+      price: {
+        dollars: 24, cents: 99, period: "/mo",
+        condition: "For 12 months when bundled with AT&T internet",
+        stepNote: "plus taxes & fees",
+        source: "operator-supplied (no national price published on att.com)",
+        observedAt: "2026-09-07",
+        endsAt: null,
+        recheck: true,
+      },
+      features: [
+        "Unlimited calls in the U.S. with no long-distance charges",
+        "Unlimited calls to Canada, Mexico, Puerto Rico, the U.S. Virgin Islands, Guam and the Northern Mariana Islands",
+        "25+ calling features including caller ID, voicemail and call forwarding",
+        "Digital Phone Call Protect screening",
+      ],
     },
     {
       name: "AT&T Phone – Advanced",
       blurb: "Adds backup power.",
       price: null,
-      features: ["Everything in AT&T Phone", "Built-in 24-hour battery backup", "Works during a power outage"],
+      features: [
+        "Everything in AT&T Phone",
+        "Built-in 24-hour battery backup",
+        "Keeps the line up during a power outage",
+      ],
     },
   ] satisfies Tier[],
-  note: "AT&T Phone may require an internet connection provided by AT&T at an additional cost.",
+  note: "AT&T Phone may require an internet connection provided by AT&T at an additional cost. Discounted plans are available to qualified customers through the AT&T Lifeline Program.",
 };
 
 /* VALUE-ADDED SERVICES. Product names verified on att.com (2026-09-07):
@@ -482,26 +537,42 @@ export const vas: { name: string; blurb: string; price: Price | null; features: 
       observedAt: "2026-09-07",
       endsAt: null,
     },
-    features: ["Wi-Fi 7 enabled gateway", "Includes All-Fi Extenders", "Each extender covers up to 1,000 sq ft"],
+    features: [
+      "Wi-Fi 7 enabled gateway",
+      "Mesh extenders included as needed, count set by AT&T",
+      "ActiveArmor advanced home network security included",
+      "One free equipment refresh every 36 months after 12 months of service",
+    ],
   },
   {
     name: "AT&T ActiveArmor℠",
-    blurb: "Security screening included with service.",
+    blurb: "Included with wireless service.",
     price: null,
-    features: ["Included at no extra cost", "Automatic fraud call blocking", "Spam risk alerts"],
+    features: [
+      "Spam and fraud call blocking with voicemail routing",
+      "Data breach alerts",
+      "Device security alerts",
+    ],
   },
   {
+    /* The $7/mo tier is the MOBILE product. Home network security of the same
+       name is bundled into All-Fi Pro above, not sold separately at $7. */
     name: "AT&T ActiveArmor advanced",
-    blurb: "The paid security tier.",
+    blurb: "The paid tier, for mobile devices.",
     price: {
       dollars: 7, cents: 0, period: "/mo",
-      condition: "Optional add-on to an eligible AT&T service",
-      stepNote: "plus taxes & fees",
+      condition: "Optional add-on for mobile devices on an eligible AT&T wireless plan",
+      stepNote: "auto-renews · plus taxes & fees",
       source: "https://www.att.com/security/active-armor/",
       observedAt: "2026-09-07",
       endsAt: null,
     },
-    features: ["VPN for public Wi-Fi", "Identity monitoring", "Safe browsing alerts"],
+    features: [
+      "Public Wi-Fi protection with encryption",
+      "Dark web monitoring and credit monitoring through Experian",
+      "Up to $1 million identity theft insurance",
+      "Safe browsing, shopping and banking",
+    ],
   },
 ];
 
@@ -514,12 +585,15 @@ export const finePrint = {
   rows: [
     "Promo price",
     "Price after promo",
-    "One-time fees",
+    "Self-install",
+    "Technician install",
+    "AutoPay discount",
     "Equipment",
     "Taxes & fees",
     "Speeds",
     "Data cap",
     "Contract",
+    "Early termination",
   ],
   columns: [
     {
@@ -527,12 +601,15 @@ export const finePrint = {
       cells: [
         "$50/mo, first year, new customers",
         null,
-        "Self-install or technician install, quoted per address",
-        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo + tax",
-        "Plus taxes & fees. Auto Pay & Paperless Billing required",
-        "Up to 1,000 Mbps symmetrical. Actual speeds vary",
+        "$0 for the kit. $99 only if you request install assistance",
+        "$150",
+        "$10/mo with bank account or AT&T Points Plus Card. $5/mo with a debit card. No discount on other credit cards",
+        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo plus tax",
+        "Plus taxes, government fees and local surcharges, which vary by address",
+        "Up to 1,000 Mbps, equal upload and download. Actual speeds vary",
         "No data cap",
         "No annual contract",
+        "None on this plan. Up to $180 pro-rated on plans sold with a service commitment",
       ],
     },
     {
@@ -540,12 +617,15 @@ export const finePrint = {
       cells: [
         null,
         null,
-        "Self-install or technician install, quoted per address",
-        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo + tax",
-        "Plus taxes & fees. Auto Pay & Paperless Billing required",
-        "Up to 300 / 500 / 5,000 Mbps symmetrical. Actual speeds vary",
+        "$0 for the kit. $99 only if you request install assistance",
+        "$150",
+        "$10/mo with bank account or AT&T Points Plus Card. $5/mo with a debit card. No discount on other credit cards",
+        "Wi-Fi equipment included. All-Fi Pro optional at $25/mo plus tax",
+        "Plus taxes, government fees and local surcharges, which vary by address",
+        "Up to 300 / 500 / 5,000 Mbps, equal upload and download. Actual speeds vary",
         "No data cap",
         "No annual contract",
+        "None on these plans. Up to $180 pro-rated on plans sold with a service commitment",
       ],
     },
     {
@@ -553,14 +633,25 @@ export const finePrint = {
       cells: [
         "$55/mo with Auto Pay & Paperless Billing",
         null,
-        "$0 self-setup",
+        "$0 plug-and-play self-setup",
+        "$99",
+        "$5/mo, regardless of payment method",
         "AT&T All-Fi Hub® included",
-        "Plus taxes & fees",
+        "Plus taxes, government fees and local surcharges, which vary by address",
         "Fixed wireless over the AT&T network. Actual speeds vary by location",
         "Unlimited data, no overage fees",
         "No annual contract",
+        "None on this plan",
       ],
     },
+  ],
+  /* Charged on any plan. Sourced from AT&T's Internet Consumer Fee Schedule. */
+  otherFees: [
+    { label: "Late payment", value: "Up to $9.99" },
+    { label: "Restoral", value: "Up to $35 per service" },
+    { label: "Repair or on-demand dispatch", value: "$99 to $150 by service type" },
+    { label: "Gateway not returned", value: "$150 to $200" },
+    { label: "Extender not returned", value: "$65 per device" },
   ],
 };
 
@@ -570,3 +661,82 @@ export const howItWorks = [
   { step: "Your address and price are checked", body: "The agent confirms what is available where you live and what it costs per month, while you are on the line." },
   { step: "AT&T sets up the service", body: "AT&T Internet Air ships a gateway you plug in yourself. Fiber is either self-installed or scheduled with a technician." },
 ];
+
+/* ==================================================================
+   SHARED CARRIER RULES — audited 2026-09-07.
+
+   PROVENANCE NOTE. Anything marked `operatorSupplied` was NOT found on
+   att.com during the audit. It is carried because the operator supplied it
+   (dealer rate cards are not public), not because it was verified. Those
+   entries also set `recheck: true` so they surface in the next audit.
+   ================================================================== */
+
+/** SOURCE: att.com/deals/autopay-discount/ — verbatim tiers. */
+export const autoPay = {
+  /** per phone line, per month */
+  wireless: { bankOrPointsPlusCard: 10, debitCard: 5, otherCreditCards: 0 },
+  /** per month, on the internet line */
+  internet: { bankOrPointsPlusCard: 10, debitCard: 5, otherCreditCards: 0 },
+  /** Internet Air is flat, whatever the payment method */
+  internetAirFlat: 5,
+  requiresPaperless: true,
+  activationLagBillPeriods: 2,
+  note: "Requires paperless billing and a valid email on file. Takes up to two bill periods to start.",
+  source: "https://www.att.com/deals/autopay-discount/",
+  observedAt: "2026-09-07",
+};
+
+/** SOURCE: att.com/legal/terms.ATTInternetConsumerFeeSchedule.html */
+export const fees = {
+  technicianInstall: { fiber: 150, internetAir: 99, dsl: 149 },
+  /** the kit itself is $0; $99 is only charged if you request assistance */
+  selfInstallKit: 0,
+  selfInstallAssistance: 99,
+  activation: { internetAir: 35, dsl: 49, fiber: null as number | null },
+  latePayment: { fiber: 9.99, internetAir: 9.99, dsl: 9.75 },
+  restoral: 35,
+  earlyTermination: { max: 180, proRated: true, appliesTo: "plans with a service commitment" },
+  dispatch: { min: 99, max: 150 },
+  unreturned: { gatewayMin: 150, gatewayMax: 200, extender: 65 },
+  source: "https://www.att.com/legal/terms.ATTInternetConsumerFeeSchedule.html",
+  observedAt: "2026-09-07",
+};
+
+/** SOURCE: att.com/offers/wireless-fiber/ — reward ladder + redemption window. */
+export const rewardCards = {
+  ladder: [
+    { tier: "AT&T Fiber 300", amount: 50 },
+    { tier: "AT&T Fiber 500", amount: 100 },
+    { tier: "AT&T Fiber 1 GIG or higher", amount: 150 },
+  ],
+  redeemWithinDays: 75,
+  deliveryWeeks: "3 to 4",
+  condition: "Must maintain and pay for qualifying service through reward fulfillment.",
+  source: "https://www.att.com/offers/wireless-fiber/",
+  observedAt: "2026-09-07",
+};
+
+/* ------------------------------------------------------------------
+   TELEVISION — DIRECTV, not AT&T.
+
+   AT&T sold its remaining 70% stake in DIRECTV to TPG on 2 July 2025 and
+   holds none of it. DIRECTV is an independent company, so this section must
+   never describe TV as an AT&T product or as available "through AT&T".
+
+   No package names or prices are published here: they were not verifiable on
+   att.com (DIRECTV is no longer part of it), and reselling DIRECTV requires a
+   separate DIRECTV dealer authorization rather than the AT&T agreement this
+   site operates under. Section routes to the call.
+   ------------------------------------------------------------------ */
+export const tv = {
+  eyebrow: "Television",
+  headline: "Television is handled by DIRECTV, a separate company.",
+  sub: "AT&T no longer owns or sells DIRECTV. If you want television alongside AT&T internet or wireless, ask on the call and we will tell you what we are authorized to place.",
+  points: [
+    "DIRECTV has operated independently of AT&T since July 2025",
+    "TV is ordered separately from AT&T internet, wireless and phone",
+    "Availability and packages are confirmed on the call",
+  ],
+  /** TODO(operator): confirm whether a DIRECTV dealer agreement is held. */
+  dealerAgreementConfirmed: false,
+};

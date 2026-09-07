@@ -23,6 +23,15 @@ export default function Bundles() {
 
         <Reveal delay={0.08} className="mx-auto mt-10 max-w-md rounded-[1.5rem] border border-brand-line bg-white p-8 shadow-[0_24px_60px_-30px_rgba(0,30,80,.4)]">
           <PriceLockup price={bundles.price} tone="light" />
+          <div className="mt-7 grid gap-4 text-left sm:grid-cols-2">
+            {bundles.offers.map((o) => (
+              <div key={o.name} className="rounded-[1.1rem] border border-brand-line bg-brand-wash p-5">
+                <h3 className="text-sm font-extrabold leading-snug text-brand-ink">{o.name}</h3>
+                <PriceLockup price={o.price} tone="light" className="mt-3" />
+              </div>
+            ))}
+          </div>
+
           <ul className="mt-6 flex flex-col gap-2.5 text-left">
             {bundles.points.map((p) => (
               <li key={p} className="flex items-start gap-2 text-sm text-brand-slate">

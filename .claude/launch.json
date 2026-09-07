@@ -3,8 +3,10 @@
   "configurations": [
     {
       "name": "att-next-dev",
+      "comment": "Invoked through node rather than the `next` bin shim: the project folder name contains '&', which breaks npm's Windows cmd shim. No port flag here — Next reads PORT, so autoPort can assign a free one.",
       "runtimeExecutable": "node",
       "runtimeArgs": ["node_modules/next/dist/bin/next", "dev"],
+      "autoPort": true,
       "port": 3000
     }
   ]
