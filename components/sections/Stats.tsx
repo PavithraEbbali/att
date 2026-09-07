@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import PriceLockup from "@/components/ui/PriceLockup";
+import CallLink from "@/components/ui/CallLink";
 import { stats } from "@/lib/content";
 import statNetwork from "@/public/images/stat-network.jpg";
 
@@ -69,6 +70,12 @@ export default function Stats() {
                 <p className="mt-4 max-w-md text-base font-semibold leading-snug text-white sm:text-lg">
                   {feature.label}. <span className="text-white/80">On the AT&amp;T 5G network, where available.</span>
                 </p>
+
+                <CallLink
+                  showNumber={false}
+                  label="Call to order"
+                  className="mt-5 inline-flex min-h-11 w-max items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-bold text-brand-navy transition-colors duration-200 hover:bg-brand-blue-300"
+                />
               </div>
             </div>
           </Reveal>
@@ -97,6 +104,12 @@ export default function Stats() {
                     </div>
 
                     <PriceLockup price={s.price} tone="dark" className="relative" />
+
+                    <CallLink
+                      showNumber={false}
+                      label="Call to order"
+                      className="relative mt-auto inline-flex min-h-11 w-full items-center justify-center rounded-full bg-white/95 px-4 py-3 text-sm font-bold text-brand-navy transition-colors duration-200 hover:bg-brand-blue-300"
+                    />
                   </article>
                 </Reveal>
               );

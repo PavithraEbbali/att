@@ -89,7 +89,7 @@ export default function HowItWorks() {
         <Reveal delay={0.12} className="mt-12 flex flex-col items-center justify-center gap-3">
           <CallLink
             icon={PHONE_ICON}
-            label="Call to Order: "
+            label="Call to order: "
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#0057B8] px-8 py-4 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:bg-[#004393] hover:shadow-xl focus-visible:ring-2 focus-visible:ring-[#0057B8] focus-visible:ring-offset-2 active:scale-[0.99]"
           />
           <p className="text-center text-xs text-brand-mist">

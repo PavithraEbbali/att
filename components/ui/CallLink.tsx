@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { business, phoneHref, canCall, PLACEHOLDER } from "@/lib/business";
+import { business, phoneHref, canCall } from "@/lib/business";
 
 /* The single place the phone number becomes a link.
 
@@ -25,14 +25,19 @@ type Props = {
 
 export default function CallLink({ className, icon, label, numberClassName, showNumber = true }: Props) {
   if (!canCall) {
-    // No number yet: render the CTA's shape, but inert and visibly provisional.
-    // It is a <span>, not an <a>, so nothing is dialable until the real TFN
-    // is supplied through the environment.
+    // Nothing to display at all — e.g. the footer address line, which relies
+    // entirely on the number. Render nothing rather than an empty element.
+    if (!label && !icon) return null;
+    /* No number yet. The CTA keeps its label and shape but shows no number and
+       no placeholder token — "Call to order" reads correctly on its own, where
+       "Call to order: [Order Line]" does not. A trailing colon is trimmed for
+       the same reason. It is a <span>, not an <a>, so nothing is dialable
+       until a real E.164 number is supplied through the environment. */
+    const bare = typeof label === "string" ? label.replace(/[:\s]+$/, "") : label;
     return (
       <span className={className} aria-disabled="true" data-call-cta-pending>
         {icon}
-        {label}
-        <span className={numberClassName}>{PLACEHOLDER.phoneDisplay}</span>
+        {bare}
       </span>
     );
   }
