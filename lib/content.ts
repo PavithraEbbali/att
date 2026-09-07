@@ -693,11 +693,53 @@ export const finePrint = {
   ],
 };
 
-/* §4.7 — three steps, describing the customer's experience only. */
-export const howItWorks = [
-  { step: "Call the number on this page", body: "You reach an agent who works with AT&T plans and pricing." },
-  { step: "Your address and price are checked", body: "The agent confirms what is available where you live and what it costs per month, while you are on the line." },
-  { step: "AT&T sets up the service", body: "AT&T Internet Air ships a gateway you plug in yourself. Fiber is either self-installed or scheduled with a technician." },
+/* §4.7 / §2.7 — the three-step order and setup flow.
+
+   Copy describes what the CUSTOMER does and gets, never the fulfillment
+   relationship behind it. Step 3 keeps BOTH fiber install paths: the audit
+   found AT&T Fiber can be self-installed or scheduled with a technician
+   ($150), so presenting it as always-professional would be inaccurate.
+
+   `image` names a file already in /public/images — coverage-map.jpeg was
+   orphaned when the Coverage section moved to place-name chips, so it earns
+   its place back here. */
+export type HowItWorksStep = {
+  title: string;
+  body: string;
+  /** short factual tag under the copy */
+  tag: string;
+  image: "coverage-map" | "why-person" | "internet-home";
+  alt: string;
+};
+
+export const howItWorksIntro = {
+  eyebrow: "Order & setup process",
+  headline: "Get Connected in Three Simple Steps",
+  sub: "From address verification to equipment setup, ordering AT&T Fiber and Internet Air is quick, transparent, and hassle-free.",
+};
+
+export const howItWorks: HowItWorksStep[] = [
+  {
+    title: "Confirm Service at Your Address",
+    body: "Call the order line or enter your ZIP code. A representative checks AT&T's availability system to confirm which Fiber or Internet Air speeds reach your exact address.",
+    tag: "Takes under 2 minutes",
+    image: "coverage-map",
+    alt: "A network coverage map",
+  },
+  {
+    title: "Review Plans & Real Pricing",
+    body: "We walk through published promotional rates, AutoPay and Paperless discounts, what equipment is included, and any reward card you qualify for. You choose the speed tier with no obligation.",
+    tag: "No term contracts on standard plans",
+    image: "why-person",
+    alt: "A representative reviewing plan options",
+  },
+  {
+    title: "Connect on Your Schedule",
+    body: "AT&T Internet Air ships as a self-install kit you plug in yourself at no setup cost. AT&T Fiber is either self-installed or scheduled with a technician on a date you pick.",
+    tag: "Self-install kit or scheduled pro setup",
+    image: "internet-home",
+    alt: "Home internet equipment set up in a living room",
+  },
 ];
 
 /* ==================================================================
