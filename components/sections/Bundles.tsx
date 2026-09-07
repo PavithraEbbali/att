@@ -63,7 +63,8 @@ export default function Bundles() {
                 </ul>
 
                 <CallLink
-                  label="Call "
+                  showNumber={false}
+                  label="Call to order"
                   className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 py-3 text-sm font-bold transition-colors duration-200 ${
                     o.featured
                       ? "bg-brand-blue-300 text-brand-navy hover:bg-white"
