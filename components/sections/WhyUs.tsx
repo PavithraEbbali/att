@@ -34,7 +34,7 @@ const reasons = [
 ];
 
 export default function WhyUs() {
-  const hours = display(business.hours);
+  const hours = display(business.hours, "hours");
 
   return (
     <section id="why" className="relative overflow-hidden bg-brand-navy py-24 text-white lg:py-28">

@@ -30,7 +30,7 @@ import heroImg from "@/public/images/hero.jpg";
    own trailing space, so h1.textContent reads as normal prose for screen readers
    and crawlers rather than gluing words together. */
 export default function Hero() {
-  const hours = display(business.hours);
+  const hours = display(business.hours, "hours");
 
   return (
     <section className="relative isolate flex min-h-screen items-center overflow-hidden bg-brand-navy text-white">

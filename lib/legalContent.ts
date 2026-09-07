@@ -658,44 +658,304 @@ export const legalDocs: LegalDoc[] = [
   },
 ];
 
+
+/* ============================================================
+   The four documents added in round 9. All identity values are
+   tokenized and resolved through resolveLegalHtml().
+   ============================================================ */
+export const additionalLegalDocs: LegalDoc[] = [
+  {
+    slug: "terms",
+    title: "Terms of Use",
+    description: "Terms governing use of this website, our standing as an independent authorized reseller of AT&amp;T services, and how pricing is confirmed.",
+    updated: "Last updated: September 7, 2026 &middot; Effective: September 7, 2026",
+    html: `
+  <div class="legal-toc">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#s1">Who you are dealing with</a></li>
+      <li><a href="#s2">We are not the carrier</a></li>
+      <li><a href="#s3">Pricing is subject to carrier confirmation</a></li>
+      <li><a href="#s4">Ordering by telephone</a></li>
+      <li><a href="#s5">Acceptable use of this site</a></li>
+      <li><a href="#s6">Intellectual property</a></li>
+      <li><a href="#s7">Disclaimer of warranties</a></li>
+      <li><a href="#s8">Limitation of liability</a></li>
+      <li><a href="#s9">Governing law and venue</a></li>
+      <li><a href="#s10">Changes to these terms</a></li>
+      <li><a href="#s11">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <p><b>Read this first.</b> This website is operated by {{BUSINESS_NAME}}, an independent authorized {{AGREEMENT_NOUN}} of AT&amp;T products and services. It is <b>not</b> an official AT&amp;T website, and we are <b>not</b> AT&amp;T Inc. or any AT&amp;T affiliate. Using this site means you accept the terms below.</p>
+  </div>
+
+  <h2 id="s1">1. Who you are dealing with</h2>
+  <p>These Terms of Use are a binding agreement between you and {{BUSINESS_NAME}} ("we," "us," or "our"), whose registered address is {{ADDRESS}}. We operate a telephone order line for AT&amp;T consumer services. If you do not agree with these terms, please do not use this website.</p>
+
+  <h2 id="s2">2. We are not the carrier</h2>
+  <p>We are an independent business authorized to sell AT&amp;T services. We are not AT&amp;T, we do not own or operate the AT&amp;T network, and we do not control AT&amp;T's pricing, promotions, eligibility rules, coverage, installation scheduling, billing, or customer support. Once your order is placed, the service relationship, the bill, and the terms of service are between you and AT&amp;T.</p>
+  <p>Nothing on this site should be read to suggest that we are AT&amp;T, that we speak for AT&amp;T, or that AT&amp;T is responsible for the content of this website. Statements and opinions presented here are ours.</p>
+
+  <h2 id="s3">3. Pricing is subject to carrier confirmation</h2>
+  <p>Every price, speed, promotion, reward card, discount, and equipment inclusion shown on this site is drawn from AT&amp;T's own published materials on the date noted beside it. All of it is:</p>
+  <ul>
+    <li><b>Promotional and time-limited.</b> AT&amp;T changes offers without notice to us.</li>
+    <li><b>Address-dependent.</b> Availability, speed tiers, and price vary street by street.</li>
+    <li><b>Eligibility-dependent.</b> Many rates require new-customer status, eligible AutoPay and Paperless Billing, a qualifying wireless plan, or a minimum service period.</li>
+    <li><b>Exclusive of taxes and fees</b> unless expressly stated otherwise.</li>
+  </ul>
+  <p>Nothing on this website is an offer capable of acceptance, a quotation, or a guarantee of a particular price. Your actual monthly price, one-time charges, and terms are confirmed with you on the telephone before any order is submitted, and are then subject to AT&amp;T's own confirmation and terms of service.</p>
+
+  <h2 id="s4">4. Ordering by telephone</h2>
+  <p>Orders are taken by telephone on the number published on this site. We do not accept orders, payment details, or identity documents through this website, and we will never ask you to submit a Social Security number, payment card number, or account password through a web form here. If a page appears to ask you for those, do not provide them and contact us at {{EMAIL}}.</p>
+  <p>Calling us places you under no obligation. You may ask for pricing for your address and end the call.</p>
+
+  <h2 id="s5">5. Acceptable use of this site</h2>
+  <p>You agree not to misuse this website. In particular, you may not attempt to gain unauthorized access to it, interfere with its operation, scrape or harvest content for commercial purposes, misrepresent your identity, or use it in violation of any applicable law.</p>
+
+  <h2 id="s6">6. Intellectual property</h2>
+  <p>The layout, text, and design of this website are owned by {{BUSINESS_NAME}} or used with permission. <b>AT&amp;T, the Globe logo, AT&amp;T Fiber, All-Fi and ActiveArmor are trademarks of AT&amp;T Intellectual Property.</b> Our use of those marks is nominative and identifies only the products and services we are authorized to sell. All other marks belong to their respective owners. See our <a href="/legal/trademarks">Trademark Attributions</a> page.</p>
+
+  <h2 id="s7">7. Disclaimer of warranties</h2>
+  <p>This website and its content are provided on an "as is" and "as available" basis, without warranties of any kind, whether express or implied, including implied warranties of merchantability, fitness for a particular purpose, and non-infringement. We do not warrant that the content is accurate, complete, or current, or that the site will be uninterrupted or error-free.</p>
+
+  <h2 id="s8">8. Limitation of liability</h2>
+  <p>To the fullest extent permitted by law, {{BUSINESS_NAME}} and its owners, employees, and agents will not be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages, or for lost profits, revenue, data, or goodwill, arising out of or relating to your use of this website, even if advised of the possibility of such damages. Some jurisdictions do not permit certain limitations, so parts of this section may not apply to you.</p>
+  <p>Nothing in these terms limits liability that cannot lawfully be limited, including liability for fraud or for death or personal injury caused by negligence.</p>
+
+  <h2 id="s9">9. Governing law and venue</h2>
+  <p>These Terms of Use are governed by the laws of the State of Texas, without regard to its conflict-of-laws rules. You and we agree that the state and federal courts located in Texas have exclusive jurisdiction over any dispute arising out of these terms or your use of this website, and you consent to personal jurisdiction there.</p>
+  <p>Your agreement with AT&amp;T for the service itself is separate and is governed by AT&amp;T's own terms, which may include their own dispute-resolution and arbitration provisions.</p>
+
+  <h2 id="s10">10. Changes to these terms</h2>
+  <p>We may update these terms as our business or the law changes. The "last updated" date at the top of this page reflects the current version. Continuing to use the site after a change means you accept the revised terms.</p>
+
+  <h2 id="s11">11. Contact</h2>
+  <ul>
+    <li>Email: {{EMAIL}}</li>
+    <li>Phone: {{PHONE}}</li>
+    <li>Mail: {{BUSINESS_NAME}}, {{ADDRESS}}</li>
+  </ul>
+`,
+  },
+
+  {
+    slug: "do-not-sell",
+    title: "Do Not Sell or Share My Personal Information",
+    description: "Your right to opt out of the sale or sharing of personal information under the CCPA and CPRA, including our support for Global Privacy Control signals.",
+    updated: "Last updated: September 7, 2026 &middot; Effective: September 7, 2026",
+    html: `
+  <div class="legal-toc">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#s1">Your right to opt out</a></li>
+      <li><a href="#s2">What "sale" and "sharing" mean</a></li>
+      <li><a href="#s3">What we actually do</a></li>
+      <li><a href="#s4">How to opt out</a></li>
+      <li><a href="#s5">Global Privacy Control</a></li>
+      <li><a href="#s6">Authorized agents</a></li>
+      <li><a href="#s7">Verification and timing</a></li>
+      <li><a href="#s8">No retaliation</a></li>
+      <li><a href="#s9">Sensitive personal information</a></li>
+      <li><a href="#s10">Contact</a></li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <p><b>The short version.</b> You can tell us not to sell or share your personal information, and we will honor it. You do not need an account, and it costs nothing. Email {{EMAIL}} with the subject line <b>"Do Not Sell or Share"</b>, or call {{PHONE}}. If your browser sends a Global Privacy Control signal, we treat that as an opt-out automatically.</p>
+  </div>
+
+  <h2 id="s1">1. Your right to opt out</h2>
+  <p>The California Consumer Privacy Act, as amended by the California Privacy Rights Act ("CCPA/CPRA"), gives California residents the right to direct a business not to sell or share their personal information. Comparable rights exist under the privacy laws of Virginia, Colorado, Connecticut, Utah, Texas, Oregon, Montana, and other states. {{BUSINESS_NAME}} extends the opt-out described on this page to <b>every visitor</b>, regardless of where you live.</p>
+
+  <h2 id="s2">2. What "sale" and "sharing" mean</h2>
+  <p>Under the CCPA/CPRA these terms are broader than an ordinary sale for money:</p>
+  <ul>
+    <li><b>Sale</b> means disclosing personal information to a third party for monetary or other valuable consideration.</li>
+    <li><b>Sharing</b> means disclosing personal information to a third party for cross-context behavioral advertising, whether or not money changes hands.</li>
+  </ul>
+  <p>Advertising and analytics cookies can amount to "sharing" even where no data is sold, which is why the opt-out below covers them.</p>
+
+  <h2 id="s3">3. What we actually do</h2>
+  <p>We do not sell your personal information for money. We may <b>share</b> limited online identifiers, such as cookie identifiers and device or browser data, with advertising and analytics providers so that our advertising can be measured and targeted. That activity can fall within the CPRA definition of "sharing," and it is what an opt-out stops.</p>
+  <p>Information you give us on a telephone call so that we can place an order, such as your name, service address, and contact details, is used to place and support that order. We do not sell it, and we do not share it for cross-context behavioral advertising.</p>
+  <p>We do not knowingly sell or share the personal information of consumers under 16 years of age.</p>
+
+  <h2 id="s4">4. How to opt out</h2>
+  <p>Use whichever is easiest. All three are equally valid:</p>
+  <ul>
+    <li><b>Email.</b> Send a request to {{EMAIL}} with the subject line "Do Not Sell or Share." Include the email address or phone number you have used with us so we can locate your records.</li>
+    <li><b>Telephone.</b> Call {{PHONE}} and tell the representative you want to opt out of the sale or sharing of your personal information.</li>
+    <li><b>Browser signal.</b> Enable Global Privacy Control, described in the next section. This is the fastest option and needs no message from you at all.</li>
+  </ul>
+  <p>You may also write to us at {{BUSINESS_NAME}}, {{ADDRESS}}.</p>
+
+  <h2 id="s5">5. Global Privacy Control</h2>
+  <p>We honor the <a href="https://globalprivacycontrol.org/" target="_blank" rel="noopener noreferrer">Global Privacy Control</a> ("GPC"), an opt-out preference signal your browser or a browser extension can send on your behalf. When we detect a GPC signal from your browser, we treat it as a valid request to opt out of the sale and sharing of the personal information associated with that browser, and we apply it automatically without asking you to confirm.</p>
+  <p>A GPC signal is tied to the browser and device you are using. If you use another browser or device, or clear your cookies, please send the signal again from that browser so we can apply it there too.</p>
+
+  <h2 id="s6">6. Authorized agents</h2>
+  <p>You may use an authorized agent to submit an opt-out on your behalf. We may ask the agent for written proof of their authority, and we may ask you to verify your own identity directly, except where the law does not permit it.</p>
+
+  <h2 id="s7">7. Verification and timing</h2>
+  <p>We do not require you to create an account to opt out. For an opt-out we ask only for enough information to identify the records concerned. We act on opt-out requests as soon as feasibly possible and in any case within fifteen business days of receiving them, and we notify any third party to whom we disclosed the information in the preceding period, as the law requires.</p>
+  <p>Requests to know, correct, or delete personal information follow a separate process with identity verification, described in our <a href="/legal/privacy">Privacy Policy</a>.</p>
+
+  <h2 id="s8">8. No retaliation</h2>
+  <p>We will not deny you service, charge you a different price, or provide a different level or quality of service because you exercised any privacy right. Opting out has no effect on the pricing or availability of any AT&amp;T service we can order for you.</p>
+
+  <h2 id="s9">9. Sensitive personal information</h2>
+  <p>We do not use or disclose sensitive personal information for purposes beyond those permitted by the CPRA without offering a right to limit that use. We do not use sensitive personal information to infer characteristics about you.</p>
+
+  <h2 id="s10">10. Contact</h2>
+  <ul>
+    <li>Opt-out email: {{EMAIL}} (subject line: "Do Not Sell or Share")</li>
+    <li>Phone: {{PHONE}}</li>
+    <li>Mail: {{BUSINESS_NAME}}, {{ADDRESS}}</li>
+  </ul>
+  <p>If you believe we have not honored a request, you may contact us at the address above, and you may also contact the California Privacy Protection Agency or your state Attorney General.</p>
+`,
+  },
+
+  {
+    slug: "accessibility",
+    title: "Accessibility Statement",
+    description: "Our commitment to digital accessibility, the WCAG 2.2 Level AA measures built into this site, and how to report a barrier.",
+    updated: "Last updated: September 7, 2026 &middot; Effective: September 7, 2026",
+    html: `
+  <div class="legal-toc">
+    <h2>On this page</h2>
+    <ol>
+      <li><a href="#s1">Our commitment</a></li>
+      <li><a href="#s2">Conformance status</a></li>
+      <li><a href="#s3">Measures built into this site</a></li>
+      <li><a href="#s4">Assistive technology and browsers</a></li>
+      <li><a href="#s5">Known limitations</a></li>
+      <li><a href="#s6">Ordering by phone</a></li>
+      <li><a href="#s7">Report a barrier</a></li>
+    </ol>
+  </div>
+
+  <div class="callout">
+    <p><b>If any part of this site is a barrier for you, tell us and we will fix it.</b> Email {{EMAIL}} or call {{PHONE}}. You can complete an order entirely by telephone, without using this website at all.</p>
+  </div>
+
+  <h2 id="s1">1. Our commitment</h2>
+  <p>{{BUSINESS_NAME}} is committed to making this website usable by as many people as possible, including people who use screen readers, magnification, speech input, switch controls, or keyboard-only navigation, and people with low vision, color vision deficiency, motion sensitivity, or cognitive disabilities.</p>
+
+  <h2 id="s2">2. Conformance status</h2>
+  <p>We aim to conform to the <b>Web Content Accessibility Guidelines (WCAG) 2.2, Level AA</b>. Conformance is an ongoing process rather than a fixed state: we test as we build, and we correct issues as we find them or as they are reported to us. This statement describes the measures actually implemented on this site, not an aspiration.</p>
+
+  <h2 id="s3">3. Measures built into this site</h2>
+  <ul>
+    <li><b>Target size.</b> Interactive controls, including every telephone link and button, present a target of at least 44 by 44 CSS pixels, exceeding the 24-pixel minimum of WCAG 2.2 success criterion 2.5.8.</li>
+    <li><b>Text size.</b> No text on the site renders below 12 pixels, and body text is set larger. Text reflows without horizontal scrolling down to a 320-pixel viewport.</li>
+    <li><b>Form input sizing.</b> Form fields use a 16-pixel font size, which prevents the automatic zoom that iOS Safari applies to smaller fields and which can disorient a user mid-task.</li>
+    <li><b>Reduced motion.</b> Every entrance animation is disabled when your system requests reduced motion, via the <code>prefers-reduced-motion</code> media query. Content appears immediately instead of animating.</li>
+    <li><b>Content without JavaScript.</b> Page content is never hidden behind a script. The site's only animation hides content solely inside a <code>@media (scripting: enabled)</code> block, so with JavaScript disabled nothing is left invisible.</li>
+    <li><b>Pricing announced in words.</b> Every price is rendered twice: a visual arrangement marked <code>aria-hidden</code>, and a plain-English sentence for screen readers generated from the same underlying data, so the two cannot disagree.</li>
+    <li><b>Semantic structure.</b> Headings are properly nested, lists are marked up as lists, the comparison table uses real table markup with scoped headers and a caption, and the FAQ accordion exposes <code>aria-expanded</code> and <code>aria-controls</code>.</li>
+    <li><b>Keyboard access.</b> All interactive elements are reachable and operable by keyboard, and focus is visible with a high-contrast outline.</li>
+    <li><b>Images.</b> Meaningful images carry descriptive alternative text; decorative images are given an empty <code>alt</code> so screen readers skip them.</li>
+    <li><b>Color and contrast.</b> Text and interface colors are chosen for contrast against their backgrounds, and color is never the only way information is conveyed.</li>
+  </ul>
+
+  <h2 id="s4">4. Assistive technology and browsers</h2>
+  <p>This site is built with standard HTML semantics and is intended to work with current versions of screen readers including NVDA, JAWS, VoiceOver, and TalkBack, on current versions of Chrome, Edge, Firefox, and Safari. If you use an older browser or an assistive technology we have not anticipated, please tell us what happens.</p>
+
+  <h2 id="s5">5. Known limitations</h2>
+  <p>We publish limitations rather than hide them:</p>
+  <ul>
+    <li>Some photographs are decorative and carry no alternative text by design. No information is conveyed only by those images.</li>
+    <li>The plan comparison table is wide. On small screens it is replaced by a stacked card layout, one card per plan, so the information is available without horizontal scrolling.</li>
+    <li>Pages we link to on att.com are operated by AT&amp;T, and their accessibility is outside our control.</li>
+  </ul>
+
+  <h2 id="s6">6. Ordering by phone</h2>
+  <p>You never have to use this website to order. Every plan, price, and piece of information on this site is available by telephone, and a representative can read out options, confirm pricing for your address, and place an order for you.</p>
+
+  <h2 id="s7">7. Report a barrier</h2>
+  <p>If you encounter anything on this site that you cannot use, please contact us. Tell us the page, what you were trying to do, and the browser or assistive technology you were using, and we will respond and work to correct it.</p>
+  <ul>
+    <li>Email: {{EMAIL}}</li>
+    <li>Phone: {{PHONE}}</li>
+    <li>Mail: {{BUSINESS_NAME}}, {{ADDRESS}}</li>
+  </ul>
+`,
+  },
+
+  {
+    slug: "contact",
+    title: "Contact & Compliance",
+    description: "How to reach us for orders, privacy rights, and compliance questions, with our registered entity details.",
+    updated: "Last updated: September 7, 2026",
+    html: `
+  <div class="callout">
+    <p><b>{{BUSINESS_NAME}} is an independent authorized {{AGREEMENT_NOUN}} of AT&amp;T services.</b> We are not AT&amp;T Inc. For questions about an existing AT&amp;T account, bill, or outage, contact AT&amp;T through the channels listed on your bill.</p>
+  </div>
+
+  <h2 id="s1">Order line</h2>
+  <p>New orders for AT&amp;T Fiber, AT&amp;T Internet Air, AT&amp;T wireless, and AT&amp;T Phone are taken by telephone. There is no obligation to order, and we can quote pricing for your address on the call.</p>
+  <ul>
+    <li>Phone: {{PHONE}}</li>
+    <li>Email: {{EMAIL}}</li>
+  </ul>
+
+  <h2 id="s2">Registered entity</h2>
+  <p>This website is operated by:</p>
+  <ul>
+    <li>{{BUSINESS_NAME}}</li>
+    <li>{{ADDRESS}}</li>
+  </ul>
+  <p>This is a registered business address for correspondence. It is not a retail location and is not open to the public.</p>
+
+  <h2 id="s3">Privacy rights and compliance</h2>
+  <p>For privacy rights requests, opt-out requests, accessibility barriers, or any compliance question, email {{EMAIL}} or write to the address above. Please describe your request clearly so we can route it correctly.</p>
+  <ul>
+    <li>Privacy rights and data requests: see our <a href="/legal/privacy">Privacy Policy</a></li>
+    <li>Opt out of the sale or sharing of personal information: see <a href="/legal/do-not-sell">Do Not Sell or Share My Personal Information</a></li>
+    <li>Marketing calls and texts: see our <a href="/legal/tcpa">TCPA &amp; Consent</a> policy</li>
+    <li>Accessibility: see our <a href="/legal/accessibility">Accessibility Statement</a></li>
+  </ul>
+
+  <h2 id="s4">Trademarks</h2>
+  <p>AT&amp;T, the Globe logo, AT&amp;T Fiber, All-Fi and ActiveArmor are trademarks of AT&amp;T Intellectual Property. Our use of these marks identifies only the products and services we are authorized to sell. See our <a href="/legal/trademarks">Trademark Attributions</a> page.</p>
+`,
+  },
+];
+
 /* ============================================================
    Token resolution.
 
    The documents above are written with {{BUSINESS_NAME}} / {{EMAIL}} /
    {{PHONE}} / {{ADDRESS}} tokens. This resolver is the ONLY place they are
-   substituted, and it guarantees no token can ever reach the DOM:
+   substituted.
 
-     1. tokens whose constant is set are replaced with the real value;
-     2. any remaining <li> or <p> that still contains a token is dropped
-        whole, because a contact line missing its contact detail is not worth
-        rendering;
-     3. as a backstop, any stray token left anywhere is removed.
-
-   A production build is blocked while these constants are unset
-   (scripts/check-business-constants.mjs), so step 2 only ever applies in dev.
+   A token whose constant is not set yet resolves to that field's bracketed
+   placeholder (e.g. "[Business Name]") rather than being dropped, so a legal
+   page always reads as a complete document. What it can never do is emit a raw
+   {{TOKEN}} or an invented company name.
    ============================================================ */
-import { business, isSet } from "./business";
+import { business, isSet, PLACEHOLDER } from "./business";
 
-const TOKEN_VALUES: Record<string, string | null> = {
-  "{{BUSINESS_NAME}}": business.legalName,
-  "{{EMAIL}}": business.email,
-  "{{PHONE}}": business.phoneDisplay,
-  "{{ADDRESS}}": business.address,
+const TOKEN_VALUES: Record<string, { value: string | null; fallback: string }> = {
+  "{{BUSINESS_NAME}}": { value: business.legalName, fallback: PLACEHOLDER.legalName },
+  "{{EMAIL}}": { value: business.email, fallback: PLACEHOLDER.email },
+  "{{PHONE}}": { value: business.phoneDisplay, fallback: PLACEHOLDER.phoneDisplay },
+  "{{ADDRESS}}": { value: business.address, fallback: PLACEHOLDER.address },
+  "{{AGREEMENT_NOUN}}": { value: business.agreementNoun, fallback: "Reseller" },
 };
 
 export function resolveLegalHtml(html: string): string {
   let out = html;
-
-  for (const [token, value] of Object.entries(TOKEN_VALUES)) {
-    if (isSet(value)) out = out.split(token).join(value);
+  for (const [token, { value, fallback }] of Object.entries(TOKEN_VALUES)) {
+    out = out.split(token).join(isSet(value) ? value : fallback);
   }
-
-  // Drop whole list items / paragraphs that still carry an unresolved token.
-  out = out.replace(/<li\b[^>]*>[\s\S]*?<\/li>/g, (m) => (m.includes("{{") ? "" : m));
-  out = out.replace(/<p\b[^>]*>[\s\S]*?<\/p>/g, (m) => (m.includes("{{") ? "" : m));
-
   // Backstop: never emit a raw token, whatever the surrounding markup.
-  out = out.replace(/\{\{[A-Z_]+\}\}/g, "");
-
-  return out;
+  return out.replace(/\{\{[A-Z_]+\}\}/g, "");
 }
+
+/** Every legal route the site serves. */
+export const allLegalDocs: LegalDoc[] = [...legalDocs, ...additionalLegalDocs];

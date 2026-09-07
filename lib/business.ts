@@ -65,30 +65,23 @@ export const business: BusinessConstants = {
   // agreement — carrier compliance audits check this exact word.
   agreementNoun: clean(process.env.NEXT_PUBLIC_AGREEMENT_NOUN) ?? "Reseller",
 
-  /* ---- Defaults ------------------------------------------------------------
-     Environment variables always win, so setting the real values in Vercel
-     (Settings -> Environment Variables) overrides everything below with no code
-     change.
+  /* ---- Supplied by environment ---------------------------------------------
+     Set these in .env.local for development and in Vercel (Settings ->
+     Environment Variables) for deployments.
 
-     The defaults are drawn from the ranges set aside for exactly this use, so
-     the page reads normally while nothing can reach a real party by mistake:
-       · 555-0100..555-0199 is the NANP block reserved for fictional numbers,
-         so the phone cannot ring anyone.
-       · example.com is reserved by RFC 2606 and can never be registered, so
-         the email and origin cannot be spoofed or mis-delivered.
+     There are deliberately NO invented fallbacks here. An unset value is null
+     and renders as a bracketed token (see PLACEHOLDER below), which reads as
+     obviously provisional. A plausible-looking company name would read as real
+     to both a visitor and a compliance reviewer, which is worse than a gap.
      -------------------------------------------------------------------------- */
-  legalName: clean(process.env.NEXT_PUBLIC_LEGAL_NAME) ?? "Example Communications LLC",
-  wordmark: clean(process.env.NEXT_PUBLIC_WORDMARK) ?? "Example Communications",
-  phoneDisplay: clean(process.env.NEXT_PUBLIC_PHONE_DISPLAY) ?? "(888) 555-0142",
-  phoneE164: clean(process.env.NEXT_PUBLIC_PHONE_E164) ?? "+18885550142",
-  hours: clean(process.env.NEXT_PUBLIC_HOURS) ?? "Mon to Sat, 9am to 7pm ET",
-  email: clean(process.env.NEXT_PUBLIC_EMAIL) ?? "orders@example.com",
-  // Deliberately not a real street address: an invented one would belong to
-  // somebody, and this renders on a public page.
-  address:
-    clean(process.env.NEXT_PUBLIC_ADDRESS) ??
-    "1 Example Plaza, Suite 100, Example City, TX",
-  origin: clean(process.env.NEXT_PUBLIC_ORIGIN) ?? "https://example.com",
+  legalName: clean(process.env.NEXT_PUBLIC_LEGAL_NAME),
+  wordmark: clean(process.env.NEXT_PUBLIC_WORDMARK),
+  phoneDisplay: clean(process.env.NEXT_PUBLIC_PHONE_DISPLAY),
+  phoneE164: clean(process.env.NEXT_PUBLIC_PHONE_E164),
+  hours: clean(process.env.NEXT_PUBLIC_HOURS),
+  email: clean(process.env.NEXT_PUBLIC_EMAIL),
+  address: clean(process.env.NEXT_PUBLIC_ADDRESS),
+  origin: clean(process.env.NEXT_PUBLIC_ORIGIN),
   callsRecorded: null,
   spanishStaffed: null,
 };
@@ -154,20 +147,37 @@ export const canCall = isSet(business.phoneDisplay) && phoneHref !== null;
    exposes NEXT_PUBLIC_VERCEL_ENV to the browser. Both are read with STATIC
    property access, for the inlining reason described above.
    ------------------------------------------------------------------ */
-export const PENDING_LABEL = "[Contact info pending]";
-
 export const IS_PRODUCTION_BUILD =
   process.env.NEXT_PUBLIC_VERCEL_ENV === "production" ||
   process.env.VERCEL_ENV === "production";
 
 /**
- * What to render for a business constant.
- * · set            -> the real value
- * · unset, preview -> "[Contact info pending]" (visible, obviously not final)
- * · unset, prod    -> null, so the caller omits the element entirely
- *                     (unreachable in practice: the build gate blocks first)
+ * What an unset field renders as, until the environment supplies it.
+ *
+ * A bracketed token, not an invented company. It reads as obviously provisional
+ * to a visitor, a compliance reviewer and a screenshot, and it is trivially
+ * greppable. These are the ONLY placeholder strings the site can produce.
  */
-export function display(value: string | null): string | null {
+export const PLACEHOLDER = {
+  legalName: "[Business Name]",
+  wordmark: "[Business Name]",
+  address: "[Registered Address]",
+  phoneDisplay: "[Order Line]",
+  email: "[Contact Email]",
+  hours: "[Staffed Hours]",
+  origin: "[Site URL]",
+} as const;
+
+export type PlaceholderKey = keyof typeof PLACEHOLDER;
+
+/** Kept for callers that have no specific field in mind. */
+export const PENDING_LABEL = "[Contact info pending]";
+
+/**
+ * What to render for a business constant: the real value once set, otherwise
+ * the field's bracketed token. Never an invented name, address or number.
+ */
+export function display(value: string | null, key?: PlaceholderKey): string | null {
   if (isSet(value)) return value;
-  return IS_PRODUCTION_BUILD ? null : PENDING_LABEL;
+  return key ? PLACEHOLDER[key] : PENDING_LABEL;
 }

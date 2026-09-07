@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { legalDocs, resolveLegalHtml } from "@/lib/legalContent";
+import { allLegalDocs, resolveLegalHtml } from "@/lib/legalContent";
 
 const decode = (s: string) => s.replace(/&middot;/g, "·").replace(/&amp;/g, "&");
 
 export function generateStaticParams() {
-  return legalDocs.map((d) => ({ slug: d.slug }));
+  return allLegalDocs.map((d) => ({ slug: d.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  const doc = legalDocs.find((d) => d.slug === slug);
+  const doc = allLegalDocs.find((d) => d.slug === slug);
   if (!doc) return {};
   return { title: `${doc.title} | AT&T Authorized Reseller`, description: decode(doc.description) };
 }
 
 export default async function LegalPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const doc = legalDocs.find((d) => d.slug === slug);
+  const doc = allLegalDocs.find((d) => d.slug === slug);
   if (!doc) notFound();
 
   return (

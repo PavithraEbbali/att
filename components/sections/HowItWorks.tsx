@@ -30,7 +30,7 @@ const PHONE_ICON = (
    and stays gated on the number actually being set. Staffed hours come from the
    business constants, never hardcoded here. */
 export default function HowItWorks() {
-  const hours = display(business.hours);
+  const hours = display(business.hours, "hours");
 
   return (
     <section id="how-it-works" className="relative overflow-hidden bg-white py-24 lg:py-28">

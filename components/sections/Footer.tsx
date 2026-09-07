@@ -17,11 +17,15 @@ import { business, display, isSet } from "@/lib/business";
    disclosure itself is not deleted: it now lives in full under "How we are
    compensated" on /legal/disclaimer, which the offer-details block links to.
 
-   TODO(§5.4): four required legal pages still do not exist — Terms of Use,
-   Accessibility Statement, Contact, and "Do Not Sell or Share My Personal
-   Information". They are identity-heavy and blocked on §8. */
+   All twelve legal routes are now built. Every one resolves its identity values
+   from lib/business.ts through resolveLegalHtml(), so none carries a hardcoded
+   entity name, address, phone number or email. */
 const legal = [
   { label: "Privacy Policy", slug: "privacy" },
+  { label: "Terms of Use", slug: "terms" },
+  { label: "Do Not Sell or Share", slug: "do-not-sell" },
+  { label: "Accessibility", slug: "accessibility" },
+  { label: "Contact & Compliance", slug: "contact" },
   { label: "Disclosure", slug: "disclaimer" },
   { label: "Cookies & Ad Tracking", slug: "cookies" },
   { label: "TCPA & Consent", slug: "tcpa" },
@@ -39,13 +43,13 @@ export default function Footer() {
   const year = new Date().getFullYear();
   // display() returns the real value, or "[Contact info pending]" outside a
   // production build, or null in production (unreachable: the gate blocks first).
-  const wordmark = display(business.wordmark);
-  const legalName = display(business.legalName);
-  const address = display(business.address);
-  const hours = display(business.hours);
+  const wordmark = display(business.wordmark, "wordmark");
+  const legalName = display(business.legalName, "legalName");
+  const address = display(business.address, "address");
+  const hours = display(business.hours, "hours");
   const email = isSet(business.email) ? business.email : null;
-  const emailLabel = display(business.email);
-  const hasContact = Boolean(legalName || address || emailLabel || hours || display(business.phoneDisplay));
+  const emailLabel = display(business.email, "email");
+  const hasContact = true; // the block always renders: unset fields show their token
 
   return (
     <footer className="relative border-t border-white/[0.09] bg-[#001a3d] pt-16 text-brand-wash/70">
@@ -64,7 +68,8 @@ export default function Footer() {
             </span>
           </span>
           <p className="mt-4 max-w-xs text-sm">
-            AT&amp;T Fiber, AT&amp;T Internet Air, AT&amp;T wireless and AT&amp;T Phone.
+            {legalName} is an independent authorized {business.agreementNoun?.toLowerCase()} of
+            AT&amp;T services. AT&amp;T Fiber, AT&amp;T Internet Air, AT&amp;T wireless and AT&amp;T Phone.
           </p>
         </div>
 

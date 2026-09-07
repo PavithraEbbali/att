@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { business, phoneHref, canCall, IS_PRODUCTION_BUILD, PENDING_LABEL } from "@/lib/business";
+import { business, phoneHref, canCall, PLACEHOLDER } from "@/lib/business";
 
 /* The single place the phone number becomes a link.
 
@@ -25,14 +25,14 @@ type Props = {
 
 export default function CallLink({ className, icon, label, numberClassName, showNumber = true }: Props) {
   if (!canCall) {
-    // Production: omit entirely (the build gate blocks before this can ship).
-    if (IS_PRODUCTION_BUILD) return null;
-    // Preview: render the shape of the CTA, but inert and clearly unfinished.
+    // No number yet: render the CTA's shape, but inert and visibly provisional.
+    // It is a <span>, not an <a>, so nothing is dialable until the real TFN
+    // is supplied through the environment.
     return (
       <span className={className} aria-disabled="true" data-call-cta-pending>
         {icon}
         {label}
-        <span className={numberClassName}>{PENDING_LABEL}</span>
+        <span className={numberClassName}>{PLACEHOLDER.phoneDisplay}</span>
       </span>
     );
   }

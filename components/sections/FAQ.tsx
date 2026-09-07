@@ -13,7 +13,7 @@ import { business, display } from "@/lib/business";
    infinite loop are gone (§3). */
 export default function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
-  const hours = display(business.hours);
+  const hours = display(business.hours, "hours");
 
   return (
     <section id="faq" className="relative overflow-hidden bg-white py-24 lg:py-32">
