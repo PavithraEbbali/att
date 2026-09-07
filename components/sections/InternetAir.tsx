@@ -45,6 +45,13 @@ export default function InternetAir() {
           <div className="relative aspect-[16/11] overflow-hidden rounded-[1.85rem] shadow-[0_50px_100px_-40px_rgba(0,0,0,.9)] ring-1 ring-white/15">
             <Image src={internetImg} alt="An internet gateway set up in a living room" fill sizes="(max-width:1024px) 100vw, 58vw" placeholder="blur" className="object-cover" />
             <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(0,18,44,.15) 0%, rgba(0,15,38,.3) 55%, rgba(0,12,30,.75) 100%)" }} />
+
+            {/* Setup claim sits on the image it illustrates. */}
+            <div className="absolute bottom-4 left-4 right-4 rounded-xl border border-white/10 bg-slate-950/75 p-3.5 text-xs text-slate-200 backdrop-blur-md sm:text-sm">
+              <span className="font-semibold text-white">{internetAir.overlay.lead}</span>
+              {" · "}
+              {internetAir.overlay.rest}
+            </div>
           </div>
         </Reveal>
       </div>

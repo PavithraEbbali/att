@@ -3,49 +3,77 @@ import PriceLockup from "@/components/ui/PriceLockup";
 import CallLink from "@/components/ui/CallLink";
 import { bundles } from "@/lib/content";
 
-/* 3 of 6 — Bundles. The figure AT&T publishes is "up to $420/yr", built from
-   $35/mo off 5 GIG internet with eligible wireless. The brief's "20% monthly
-   bill credit" and "Build-A-Plan from $70/mo" are not on att.com and are not
-   shown here. */
+/* Bundle savings — three standalone offers in a responsive 3-up grid.
+
+   These were previously nested inside one card, which read as a single
+   compound offer rather than three alternatives. Each now owns its card, its
+   §3 price lockup, its bullets and its own call CTA, so they can be compared
+   side by side.
+
+   Palette follows the section it sits in: deep navy ground, slate-bordered
+   cards, one accent ring on the featured offer only. Entrance is the shared
+   CSS reveal; nothing else moves. */
 export default function Bundles() {
   return (
-    <section id="bundles" className="relative overflow-hidden bg-brand-wash py-24 lg:py-28">
-      <div className="mx-auto w-[min(100%-3rem,1000px)] text-center">
-        <Reveal>
-          <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.22em] text-brand-blue">
-            <span className="h-px w-8 bg-brand-blue/60" /> {bundles.eyebrow} <span className="h-px w-8 bg-brand-blue/60" />
+    <section id="bundles" className="relative overflow-hidden py-24 lg:py-28" style={{ background: "linear-gradient(180deg, #00285f 0%, #001a3f 60%, #00122c 100%)" }}>
+      <div aria-hidden className="pointer-events-none absolute -left-40 top-10 h-[30rem] w-[30rem] rounded-full bg-brand-blue-300/10 blur-3xl" />
+
+      <div className="relative mx-auto w-[min(100%-3rem,1200px)]">
+        <Reveal className="max-w-3xl">
+          <span className="inline-flex items-center gap-2.5 text-xs font-bold uppercase tracking-[0.22em] text-brand-blue-300">
+            <span className="h-px w-8 bg-brand-blue-300/60" /> {bundles.eyebrow}
           </span>
-          <h2 className="h-grad-light mx-auto mt-4 max-w-2xl text-[clamp(2rem,4.4vw,3rem)] font-extrabold leading-[1.05] tracking-[-0.03em]">
+          <h2 className="mt-4 text-[clamp(2rem,4.4vw,3rem)] font-extrabold leading-[1.06] tracking-[-0.03em] text-white">
             {bundles.headline}
           </h2>
-          <p className="mx-auto mt-4 max-w-xl text-lg text-brand-slate">{bundles.sub}</p>
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-white/90">{bundles.sub}</p>
         </Reveal>
 
-        <Reveal delay={0.08} className="mx-auto mt-10 max-w-md rounded-[1.5rem] border border-brand-line bg-white p-8 shadow-[0_24px_60px_-30px_rgba(0,30,80,.4)]">
-          <PriceLockup price={bundles.price} tone="light" />
-          <div className="mt-7 grid gap-4 text-left sm:grid-cols-2">
-            {bundles.offers.map((o) => (
-              <div key={o.name} className="rounded-[1.1rem] border border-brand-line bg-brand-wash p-5">
-                <h3 className="text-sm font-extrabold leading-snug text-brand-ink">{o.name}</h3>
-                <PriceLockup price={o.price} tone="light" className="mt-3" />
-              </div>
-            ))}
-          </div>
+        <div className="mt-12 grid grid-cols-1 gap-6 md:grid-cols-3">
+          {bundles.offers.map((o, i) => (
+            <Reveal key={o.name} delay={i * 0.07} className="flex">
+              <article
+                className={`relative flex h-full w-full flex-col rounded-[1.35rem] border bg-white/[0.07] p-6 backdrop-blur-sm transition-[border-color,box-shadow] duration-200 ${
+                  o.featured
+                    ? "border-brand-blue-300/60 ring-2 ring-brand-blue-300 shadow-[0_28px_70px_-30px_rgba(0,159,219,.55)]"
+                    : "border-white/15 hover:border-brand-blue-300/50"
+                }`}
+              >
+                {o.badge && (
+                  <span className="absolute -top-3 left-6 rounded-full bg-brand-blue-300 px-3 py-1 text-xs font-bold uppercase tracking-widest text-brand-navy">
+                    {o.badge}
+                  </span>
+                )}
 
-          <ul className="mt-6 flex flex-col gap-2.5 text-left">
-            {bundles.points.map((p) => (
-              <li key={p} className="flex items-start gap-2 text-sm text-brand-slate">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0072b2" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0" aria-hidden><path d="M20 6 9 17l-5-5" /></svg>
-                {p}
-              </li>
-            ))}
-          </ul>
-          <CallLink
-            label="Call to order"
-            showNumber={false}
-            className="mt-7 inline-flex min-h-11 w-full items-center justify-center rounded-full bg-brand-navy px-6 py-3 font-bold text-white transition-colors duration-200 hover:bg-brand-blue"
-          />
-        </Reveal>
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-brand-blue-300">
+                  {o.eyebrow}
+                </span>
+
+                <PriceLockup price={o.price} tone="dark" className="mt-4" />
+
+                <ul className="mt-6 flex flex-1 flex-col gap-2.5">
+                  {o.bullets.map((b) => (
+                    <li key={b} className="flex items-start gap-2 text-sm text-white/90">
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#009fdb" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="mt-0.5 shrink-0" aria-hidden>
+                        <path d="M20 6 9 17l-5-5" />
+                      </svg>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+
+                <CallLink
+                  label="Call "
+                  className={`mt-6 inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-full px-4 py-3 text-sm font-bold transition-colors duration-200 ${
+                    o.featured
+                      ? "bg-brand-blue-300 text-brand-navy hover:bg-white"
+                      : "bg-white text-brand-navy hover:bg-brand-blue-300"
+                  }`}
+                />
+              </article>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   );

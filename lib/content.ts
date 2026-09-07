@@ -28,6 +28,12 @@ export type Price = {
   /** post-promo step-up, when AT&T publishes one */
   stepUp?: { amount: number } | null;
   /**
+   * Currency symbol for the lockup's leading glyph. Pass null for a figure that
+   * is not a currency amount (e.g. a percentage), so the "$" is suppressed and
+   * the screen-reader sentence reads correctly.
+   */
+  symbol?: string | null;
+  /**
    * The §3 lockup's step line, e.g. "plus taxes & fees · no annual contract".
    * Free text because it varies per product: "no annual contract" is published
    * for Fiber and Internet Air but NOT for the postpaid wireless tiers, so it
@@ -389,8 +395,8 @@ export const fiber = {
    customers, so it is deliberately absent rather than advertised. */
 export const internetAir = {
   eyebrow: "AT&T Internet Air®",
-  headline: "5G home internet where fiber has not reached.",
-  sub: "A gateway you plug in yourself connects over the AT&T wireless network. Offered in select areas where AT&T Fiber is not available.",
+  headline: "AT&T Internet Air®: Reliable 5G Home Internet",
+  sub: "Fast, reliable fixed wireless broadband delivered over the AT&T 5G network. Ideal for addresses outside the AT&T Fiber footprint.",
   price: {
     dollars: 55, cents: 0, period: "/mo",
     condition: "with Auto Pay & Paperless Billing",
@@ -399,6 +405,10 @@ export const internetAir = {
     observedAt: "2026-09-07",
     endsAt: null,
   } satisfies Price,
+  overlay: {
+    lead: "Plug-and-play setup in under 15 minutes",
+    rest: "Connect seamlessly with the included AT&T All-Fi Hub®",
+  },
   features: [
     "AT&T All-Fi Hub® included",
     "$0 plug-and-play self-setup",
@@ -409,7 +419,7 @@ export const internetAir = {
   // not published on the product page. Omitted rather than guessed.
 };
 
-/* BUNDLE SAVINGS — three offers, two audited and one operator-supplied.
+/* BUNDLE SAVINGS — three standalone offers, each its own card.
 
    Verbatim from att.com/bundles/ (2026-09-07):
      "$420 savings for new customers based on combined discounts of $35/mo. on
@@ -419,54 +429,82 @@ export const internetAir = {
      "Get hyper-fast 1 GIG internet for $30/mo. For your first 12 months when
       you bundle with an unlimited wireless plan."
 
-   The ongoing 20% credit was checked on BOTH bundle pages and appears on
-   neither, so it is flagged `recheck` and attributed to the operator rather
-   than to att.com. */
+   TWO BULLET CORRECTIONS against the brief, both flagged in the handback:
+   · "Wi-Fi 7 gateway equipment included" is wrong. Wi-Fi 7 is All-Fi Pro, a
+     paid $25/mo upgrade. Standard Wi-Fi equipment is what's included.
+   · The ongoing percentage discount is operator-supplied. It was checked on
+     both bundle pages during the audit and appears on neither, so it carries
+     `recheck` and its source records that.
+   ------------------------------------------------------------------ */
+export type BundleOffer = {
+  eyebrow: string;
+  name: string;
+  badge?: string;
+  featured?: boolean;
+  price: Price;
+  bullets: string[];
+};
+
 export const bundles = {
   eyebrow: "Bundle savings",
-  headline: "Add wireless to home internet and the internet bill drops.",
-  sub: "AT&T discounts the home internet line when eligible unlimited wireless sits on the same account.",
-  /** headline figure, used for the section's price lockup */
-  price: {
-    dollars: 420, period: "/yr",
-    condition: "New customers. Up to $35/mo off 5 GIG internet with eligible wireless service, Auto Pay & Paperless Billing",
-    stepNote: "up to · limited availability in select areas",
-    source: "https://www.att.com/bundles/",
-    observedAt: "2026-09-07",
-    endsAt: null,
-  } satisfies Price,
+  headline: "Combine AT&T Fiber® & Unlimited Wireless for Maximum Savings",
+  sub: "Pair an eligible AT&T postpaid unlimited wireless plan with AT&T home internet on the same account to unlock ongoing monthly bill credits and bundled perks.",
   offers: [
     {
-      name: "1 GIG bundled with unlimited wireless",
+      eyebrow: "Top-Tier Bundle Savings",
+      name: "Annual savings benchmark",
+      price: {
+        dollars: 420, period: "/yr",
+        condition: "New customers pairing 5 GIG Fiber with eligible Unlimited Wireless",
+        stepNote: "up to · limited availability in select areas",
+        source: "https://www.att.com/bundles/",
+        observedAt: "2026-09-07",
+        endsAt: null,
+      } satisfies Price,
+      bullets: [
+        "Up to $35/mo bill credit on top-tier fiber",
+        "Symmetrical upload and download speeds",
+        "AT&T Internet Backup included",
+      ],
+    },
+    {
+      eyebrow: "1 GIG Fiber + Wireless",
+      name: "1 GIG promotional bundle",
+      badge: "Most Popular Bundle",
+      featured: true,
       price: {
         dollars: 30, cents: 0, period: "/mo",
-        condition: "For your first 12 months when you bundle with an unlimited wireless plan",
+        condition: "For first 12 mos when bundled with an eligible unlimited wireless plan & AutoPay",
         stepNote: "plus taxes & fees · no annual contract",
         source: "https://www.att.com/bundles/internet-wireless/",
         observedAt: "2026-09-07",
         endsAt: null,
       } satisfies Price,
+      bullets: [
+        "Hyper-fast 1,000 Mbps symmetrical speeds",
+        "Wi-Fi equipment included, All-Fi Pro optional at $25/mo",
+        "Unlimited internet data with zero overage charges",
+      ],
     },
     {
-      name: "Ongoing discount on AT&T Fiber",
+      eyebrow: "Everyday Bundle Credit",
+      name: "Standard ongoing discount",
       price: {
-        dollars: 20, period: "% off",
-        condition: "Ongoing monthly discount on AT&T Fiber with an eligible Unlimited wireless plan",
+        dollars: 20, symbol: null, period: "% off",
+        condition: "Ongoing discount on AT&T Fiber with eligible Unlimited Wireless",
         stepNote: "operator-supplied figure · confirm before campaign launch",
-        // NOT FOUND on att.com/bundles/ or att.com/bundles/internet-wireless/
-        // during the 2026-09-07 audit. Carried on the operator's instruction.
         source: "operator-supplied (not published on att.com)",
         observedAt: "2026-09-07",
         endsAt: null,
         recheck: true,
       } satisfies Price,
+      bullets: [
+        "Applies across 300M, 500M and 1 GIG fiber plans",
+        "Mix and match individual wireless lines",
+        "Unified billing across internet and wireless",
+      ],
     },
-  ],
-  points: [
-    "Discount applies to the home internet line",
-    "Requires eligible AT&T unlimited wireless on the same account",
-    "Auto Pay and Paperless Billing required",
-  ],
+  ] satisfies BundleOffer[],
 };
 
 /* AT&T PHONE — plan name and calling allowances audited on att.com

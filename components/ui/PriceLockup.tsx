@@ -25,13 +25,18 @@ function asOf(observedAt: string) {
   return `${MONTHS[(m ?? 1) - 1]} ${y}`;
 }
 
-function money(dollars: number, cents?: number) {
-  return cents == null ? `$${dollars}` : `$${dollars}.${String(cents).padStart(2, "0")}`;
+function money(dollars: number, cents?: number, symbol: string | null = "$") {
+  const sym = symbol ?? "";
+  return cents == null ? `${sym}${dollars}` : `${sym}${dollars}.${String(cents).padStart(2, "0")}`;
 }
 
 /** Plain-English equivalent of everything the visual row shows. */
 function spoken(p: Price) {
-  const parts = [`${money(p.dollars, p.cents)} per month`];
+  const symbol = p.symbol === undefined ? "$" : p.symbol;
+  const period = p.period ?? "/mo";
+  // "/mo" reads as "per month"; anything else (a percentage, "/yr") is spoken as written.
+  const spokenPeriod = period === "/mo" ? " per month" : period === "/yr" ? " per year" : period;
+  const parts = [`${money(p.dollars, p.cents, symbol)}${spokenPeriod}`];
   if (p.condition) parts.push(p.condition);
   if (p.stepNote) parts.push(p.stepNote);
   else if (p.stepUp) parts.push(`Then $${p.stepUp.amount} per month, plus taxes, fees and surcharges`);
@@ -55,13 +60,14 @@ export default function PriceLockup({
   // A struck "was" price is only meaningful when it is HIGHER than the price
   // being advertised. Anything else is dropped rather than rendered backwards.
   const was = price.was != null && price.was > price.dollars ? price.was : null;
+  const symbol = price.symbol === undefined ? "$" : price.symbol;
   const step = price.stepNote ?? (price.stepUp ? `Then $${price.stepUp.amount}/mo · plus taxes & fees` : null);
 
   return (
     <div className={`lockup ${tone === "dark" ? "lockup--dark" : ""} ${className}`.trim()}>
       <p className="lockup__row" aria-hidden="true">
-        {was != null && <span className="lockup__was">${was}</span>}
-        <span className="lockup__cur">$</span>
+        {was != null && <span className="lockup__was">{symbol}{was}</span>}
+        {symbol && <span className="lockup__cur">{symbol}</span>}
         <span className="lockup__int">{price.dollars}</span>
         {price.cents != null && (
           <span className="lockup__cents">.{String(price.cents).padStart(2, "0")}</span>
